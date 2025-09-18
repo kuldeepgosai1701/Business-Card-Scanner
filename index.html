@@ -9,30 +9,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
-    font-family: 'Roboto', sans-serif;
-    background: #f2f6fc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  /* Full screen height */
+  margin: 0;
+  background-color: #f0f0f0;
+}
+.card-scanner {
+  width: 90%;         /* Mobile screen width ka 90% */
+  max-width: 400px;   /* Zyada bada na ho */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  text-align: center;
+}
 
-  .scanner-container {
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    width: 350px;
-    text-align: center;
-  }
+.card-scanner button {
+  width: 100%;          /* Button poora box width le */
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-  .scanner-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
+.card-scanner .scan-btn {
+  background-color: #4CAF50;  /* Green */
+}
 
+.card-scanner .form-btn {
+  background-color: #2196F3;  /* Blue */
+}
+
+  
   .file-input {
     display: block;
     width: 100%;
@@ -64,6 +77,7 @@
     transition: 0.3s;
   }
 
+  
   .scan-btn {
     background: #4caf50;
     color: #fff;
@@ -72,7 +86,7 @@
   .scan-btn:hover {
     background: #45a049;
   }
-
+  
   .form-btn {
     background: #2196f3;
     color: #fff;
