@@ -1,0 +1,20 @@
+{
+  "name": "Business Card Scanner",
+  "short_name": "CardScanner",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2f6fc",
+  "theme_color": "#4caf50",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
