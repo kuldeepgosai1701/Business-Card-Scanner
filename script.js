@@ -46,15 +46,27 @@ async function extractText(file) {
 // On form page load, fill extracted text
 window.addEventListener("load", () => {
   const ocrText = localStorage.getItem("ocrText");
-  if (ocrText && document.getElementById("businessName")) {
-    // Basic fill (later regex se parse karenge)
-    document.getElementById("businessName").value = ocrText.split("\n")[0] || "";
-    document.getElementById("contactPerson").value = ocrText.split("\n")[1] || "";
-    document.getElementById("phone").value = (ocrText.match(/\+?\d[\d\s-]{8,}/) || [""])[0];
-    document.getElementById("email").value = (ocrText.match(/\S+@\S+\.\S+/) || [""])[0];
-    document.getElementById("address").value = ocrText.split("\n").slice(-2).join(" ");
-  }
+  if (ocrText && document.getElementById("businessName")){
+     const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l); 
+    
 
-  
+      // Business Name - pehli line
+    document.getElementById("businessName").value = lines[0] || "";
+
+    // Contact Person - doosri line
+    document.getElementById("contactPerson").value = lines[1] || "";
+
+    // Phone Numbers - sab match ho aur comma se join ho
+    const phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g); // 8+ digit numbers
+    document.getElementById("phone").value = phoneMatches ? phoneMatches.join(", ") : "";
+
+    // Emails - sab match ho aur comma se join ho
+    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
+    document.getElementById("email").value = emailMatches ? emailMatches.join(", ") : "";
+
+    // Address - last 2 lines (ya jitna ho) join
+    document.getElementById("address").value = lines.slice(-2).join(" ");
+  }
 });
+  
 
