@@ -56,6 +56,6 @@ window.addEventListener("load", () => {
   }
 
   <script src="script.js?v=1.2"></script>
-<link rel="stylesheet" href="style.css?v=1.2"></link>
+<link rel="stylesheet" href="style.css?v=1.3"></link>
 });
 
