@@ -55,7 +55,6 @@ window.addEventListener("load", () => {
     document.getElementById("address").value = ocrText.split("\n").slice(-2).join(" ");
   }
 
-  <script src="script.js?v=1.2"></script>
-<link rel="stylesheet" href="style.css?v=1.3"></link>
+  
 });
 
