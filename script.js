@@ -6,15 +6,25 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
     return;
   }
 
+    // Loader show
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
+
   // Extract text using Tesseract
   const text = await extractText(file);
 
   // Save data temporarily (localStorage se dusre page me bhejenge)
   localStorage.setItem("ocrText", text);
 
-  alert("Scan complete! Now click Form button to view details.");
+    // Loader hide
+  loader.style.display = "none";
+
+  // ✅ Direct form.html pe redirect
+  window.location.href = "form.html";
 });
 
+  
 async function extractText(file) {
   return new Promise((resolve, reject) => {
     Tesseract.recognize(
@@ -28,9 +38,9 @@ async function extractText(file) {
 }
 
 // Navigate to form page
-function goToForm() {
+/*function goToForm() {
   window.location.href = "form.html";
-}
+}*/
 
 // On form page load, fill extracted text
 window.addEventListener("load", () => {
