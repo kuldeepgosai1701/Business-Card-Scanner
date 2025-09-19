@@ -8,9 +8,11 @@
 <!-- Google Fonts + Material Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <!-- Tesseract.js OCR Library -->
+ 
+<!-- Tesseract.js OCR Library -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
-<style>
+  
+  <style>
   body {
     display: flex;
     justify-content: center;
@@ -120,27 +122,8 @@
 
     <!-- Loader -->
     <div id="loader">⏳ Scanning in progress...</div>
-  </div>
-
-<script>
-  console.log("kuldeep")
-
-  // Scan button with loader
-  document.querySelector(".scan-btn").addEventListener("click", () => {
-    const loader = document.getElementById("loader");
-    loader.style.display = "block";
-
-    // Simulate scan delay
-    setTimeout(() => {
-      loader.style.display = "none";
-      alert("✅ Scan Complete!");
-    }, 2000);
-  });
-
-  /*// Form button example
-  document.querySelector(".form-btn").addEventListener("click", () => {
-    alert("Form page will open here...");*/
-
-</script>
+</div>
+  
+<script src="script.js"></script>
 </body>
 </html>
