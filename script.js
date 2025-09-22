@@ -106,7 +106,8 @@ document.getElementById("address").value =
     const ocrText = localStorage.getItem("ocrText");
     if (!ocrText) return;
 
-    const lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
+    //const lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
+    const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l);
 
     document.getElementById("businessName").value = lines[0] || "";
     document.getElementById("contactPerson").value = lines[1] || "";
