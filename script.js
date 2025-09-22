@@ -37,100 +37,6 @@ async function extractText(file) {
     }).catch(err => reject(err));
   });
 }
-
-// Navigate to form page
-/*function goToForm() {
-  window.location.href = "form.html";
-}*/
-
-// On form page load, fill extracted text
-/*window.addEventListener("load", () => {
-  const ocrText = localStorage.getItem("ocrText");
-  if (ocrText && document.getElementById("businessName")){
-     const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l); 
-    
-
-      // Business Name - pehli line
-    document.getElementById("businessName").value = lines[0] || "";
-
-    // Contact Person - doosri line
-    document.getElementById("contactPerson").value = lines[1] || "";
-
-    // Phone Numbers - sab match ho aur comma se join ho
-    const phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g); // 8+ digit numbers
-    document.getElementById("phone").value = phoneMatches ? phoneMatches.join(", ") : "";
-
-    // Emails - sab match ho aur comma se join ho
-    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
-    document.getElementById("email").value = emailMatches ? emailMatches.join(", ") : "";
-
-    // Address - last 2 lines (ya jitna ho) join
-   // document.getElementById("address").value = lines.slice(-2).join(",");
-   // Address extraction logic
-let addressMatches = [];
-
-// Split by line and check har line me address related keyword hai ya nahi
-lines.forEach(line => {
-  if (
-    /\b(road|rd\.|street|st\.|lane|ln\.|block|sector|near|opp\.|tower|avenue|city|state|pincode|india|dist\.|taluka|village)\b/i.test(line) ||
-    /\b\d{6}\b/.test(line) // Indian pincode match
-  ) {
-    addressMatches.push(line);
-  }
-});
-
-// Agar kuch mila toh join karo, otherwise blank chhodo
-document.getElementById("address").value =
-  addressMatches.length > 0 ? addressMatches.join(", ") : "";
-  }});*/
-
-  /*window.addEventListener("load", () => {
-
-  // --- INDEX.HTML PAGE ---
-  if (document.getElementById("scanBtn")) {
-    document.getElementById("scanBtn").addEventListener("click", async () => {
-      const file = document.getElementById("cardImage").files[0];
-      if (!file) { alert("Please upload or capture an image!"); return; }
-
-      document.getElementById("loader").style.display = "block";
-      const text = await extractText(file);
-      localStorage.setItem("ocrText", text);
-      document.getElementById("loader").style.display = "none";
-
-      window.location.href = "form.html";
-    });
-  }
-
-  // --- FORM.HTML PAGE ---
-  if (document.getElementById("businessName")) {
-    const ocrText = localStorage.getItem("ocrText");
-    if (!ocrText) return;
-
-    //const lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
-    const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l);
-
-    document.getElementById("businessName").value = lines[0] || "";
-    document.getElementById("contactPerson").value = lines[1] || "";
-
-    const phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g);
-    document.getElementById("phone").value = phoneMatches ? phoneMatches.join(", ") : "";
-
-    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
-    document.getElementById("email").value = emailMatches ? emailMatches.join(", ") : "";
-
-    // Address extraction
-    let addressMatches = [];
-    lines.forEach(line => {
-      if (/\b(road|rd\.|street|st\.|lane|ln\.|block|sector|near|opp\.|tower|avenue|city|state|pincode|india|dist\.|taluka|village)\b/i.test(line)
-          || /\b\d{6}\b/.test(line)) {
-        addressMatches.push(line);
-      }
-    });
-    document.getElementById("address").value = addressMatches.length > 0 ? addressMatches.join(", ") : "";
-  }
-
-});*/
-
 window.addEventListener("load", () => {
 
   // OCR Function
@@ -142,7 +48,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  // INDEX PAGE
+  // --- INDEX PAGE ---
   if (document.getElementById("scanBtn")) {
     document.getElementById("scanBtn").addEventListener("click", async () => {
       const file = document.getElementById("cardImage").files[0];
@@ -157,7 +63,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  // FORM PAGE
+  // --- FORM PAGE ---
   if (document.getElementById("businessName")) {
     const ocrText = localStorage.getItem("ocrText");
     if (!ocrText) return;
@@ -174,21 +80,29 @@ window.addEventListener("load", () => {
     const phone = phoneMatches ? phoneMatches.join(", ") : "";
 
     // 🏢 Business Name
-    let businessLine = lines.find(l => /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l));
-    if (!businessLine) businessLine = lines[0] || "";
+    let businessLine = lines.find(l =>
+      /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
+    );
+    if (!businessLine) {
+      businessLine = lines.find(l => !/\d/.test(l) && !/@/.test(l) && l.length > 3) || "";
+    }
 
     // 👤 Contact Person
-    let contactLine = lines.find(l => /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder)/i.test(l));
-    if (!contactLine && lines.length > 1) contactLine = lines[1];
+    let contactLine = lines.find(l =>
+      /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
+    );
+    if (!contactLine) {
+      contactLine = lines.find(l => /^[A-Z][a-z]+ [A-Z][a-z]+$/.test(l)); // Simple Name Pattern
+    }
 
     // 🏠 Address (multiple lines allowed)
     let addressMatches = [];
     lines.forEach(line => {
-      if (/(road|street|highway|lane|park|sector|circle|nagar|gate|block|city|state|india|\d{6})/i.test(line)) {
+      if (/(road|street|highway|lane|nagar|sector|circle|block|gate|city|state|india|\d{6})/i.test(line)) {
         addressMatches.push(line);
       }
     });
-    let address = addressMatches.length > 0 ? addressMatches.join(", ") : lines.slice(-2).join(", ");
+    let address = addressMatches.length > 0 ? addressMatches.join(", ") : "";
 
     // ✅ Fill Form Fields
     document.getElementById("businessName").value = businessLine;
@@ -198,4 +112,6 @@ window.addEventListener("load", () => {
     document.getElementById("address").value = address;
   }
 });
+
+
 
