@@ -266,7 +266,7 @@ window.addEventListener("load", () => {
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
 });
-});
+
 
 
 
