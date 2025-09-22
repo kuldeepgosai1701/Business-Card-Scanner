@@ -84,7 +84,7 @@ document.getElementById("address").value =
   addressMatches.length > 0 ? addressMatches.join(", ") : "";
   }});*/
 
-  window.addEventListener("load", () => {
+  /*window.addEventListener("load", () => {
 
   // --- INDEX.HTML PAGE ---
   if (document.getElementById("scanBtn")) {
@@ -129,4 +129,73 @@ document.getElementById("address").value =
     document.getElementById("address").value = addressMatches.length > 0 ? addressMatches.join(", ") : "";
   }
 
+});*/
+
+window.addEventListener("load", () => {
+
+  // OCR Function
+  async function extractText(file) {
+    return new Promise((resolve, reject) => {
+      Tesseract.recognize(file, 'eng', { logger: m => console.log(m) })
+        .then(({ data: { text } }) => resolve(text))
+        .catch(err => reject(err));
+    });
+  }
+
+  // INDEX PAGE
+  if (document.getElementById("scanBtn")) {
+    document.getElementById("scanBtn").addEventListener("click", async () => {
+      const file = document.getElementById("cardImage").files[0];
+      if (!file) { alert("Please upload or capture an image!"); return; }
+
+      document.getElementById("loader").style.display = "block";
+      const text = await extractText(file);
+      localStorage.setItem("ocrText", text);
+      document.getElementById("loader").style.display = "none";
+
+      window.location.href = "form.html";
+    });
+  }
+
+  // FORM PAGE
+  if (document.getElementById("businessName")) {
+    const ocrText = localStorage.getItem("ocrText");
+    if (!ocrText) return;
+
+    const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l);
+    console.log("Extracted Lines:", lines);
+
+    // 📧 Emails (multiple allowed)
+    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
+    const email = emailMatches ? emailMatches.join(", ") : "";
+
+    // 📞 Phone numbers (multiple allowed)
+    const phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g);
+    const phone = phoneMatches ? phoneMatches.join(", ") : "";
+
+    // 🏢 Business Name
+    let businessLine = lines.find(l => /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l));
+    if (!businessLine) businessLine = lines[0] || "";
+
+    // 👤 Contact Person
+    let contactLine = lines.find(l => /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder)/i.test(l));
+    if (!contactLine && lines.length > 1) contactLine = lines[1];
+
+    // 🏠 Address (multiple lines allowed)
+    let addressMatches = [];
+    lines.forEach(line => {
+      if (/(road|street|highway|lane|park|sector|circle|nagar|gate|block|city|state|india|\d{6})/i.test(line)) {
+        addressMatches.push(line);
+      }
+    });
+    let address = addressMatches.length > 0 ? addressMatches.join(", ") : lines.slice(-2).join(", ");
+
+    // ✅ Fill Form Fields
+    document.getElementById("businessName").value = businessLine;
+    document.getElementById("contactPerson").value = contactLine || "";
+    document.getElementById("phone").value = phone;
+    document.getElementById("email").value = email;
+    document.getElementById("address").value = address;
+  }
 });
+
