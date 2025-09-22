@@ -44,7 +44,7 @@ async function extractText(file) {
 }*/
 
 // On form page load, fill extracted text
-window.addEventListener("load", () => {
+/*window.addEventListener("load", () => {
   const ocrText = localStorage.getItem("ocrText");
   if (ocrText && document.getElementById("businessName")){
      const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l); 
@@ -82,4 +82,50 @@ lines.forEach(line => {
 // Agar kuch mila toh join karo, otherwise blank chhodo
 document.getElementById("address").value =
   addressMatches.length > 0 ? addressMatches.join(", ") : "";
-  }});
+  }});*/
+
+  window.addEventListener("load", () => {
+
+  // --- INDEX.HTML PAGE ---
+  if (document.getElementById("scanBtn")) {
+    document.getElementById("scanBtn").addEventListener("click", async () => {
+      const file = document.getElementById("cardImage").files[0];
+      if (!file) { alert("Please upload or capture an image!"); return; }
+
+      document.getElementById("loader").style.display = "block";
+      const text = await extractText(file);
+      localStorage.setItem("ocrText", text);
+      document.getElementById("loader").style.display = "none";
+
+      window.location.href = "form.html";
+    });
+  }
+
+  // --- FORM.HTML PAGE ---
+  if (document.getElementById("businessName")) {
+    const ocrText = localStorage.getItem("ocrText");
+    if (!ocrText) return;
+
+    const lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
+
+    document.getElementById("businessName").value = lines[0] || "";
+    document.getElementById("contactPerson").value = lines[1] || "";
+
+    const phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g);
+    document.getElementById("phone").value = phoneMatches ? phoneMatches.join(", ") : "";
+
+    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
+    document.getElementById("email").value = emailMatches ? emailMatches.join(", ") : "";
+
+    // Address extraction
+    let addressMatches = [];
+    lines.forEach(line => {
+      if (/\b(road|rd\.|street|st\.|lane|ln\.|block|sector|near|opp\.|tower|avenue|city|state|pincode|india|dist\.|taluka|village)\b/i.test(line)
+          || /\b\d{6}\b/.test(line)) {
+        addressMatches.push(line);
+      }
+    });
+    document.getElementById("address").value = addressMatches.length > 0 ? addressMatches.join(", ") : "";
+  }
+
+});
