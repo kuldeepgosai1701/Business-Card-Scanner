@@ -142,7 +142,7 @@ window.addEventListener("load", () => {
     !phoneMatches.some(p => line.includes(p))
   );
 
-  // 🏢 Business Name
+  /*// 🏢 Business Name
   let businessLine = lines.find(l =>
     /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
   );
@@ -162,6 +162,33 @@ window.addEventListener("load", () => {
       let candidate = lines[businessIndex + 1];
       if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/.test(candidate)) {
         contactLine = candidate;
+      }
+    }
+  }*/
+
+  let businessLine = cleanLines.find(l =>
+    /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
+  );
+
+  /*if (!businessLine) {
+    // fallback: choose top long uppercase-ish line
+    businessLine = cleanLines.find(l => l.length > 10 && /^[A-Z\s&.,]+$/.test(l)) ||
+                   cleanLines[0] || "";
+  }*/
+
+  // 👤 Contact Person
+  let contactLine = cleanLines.find(l =>
+    /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
+  );
+
+  if (!contactLine) {
+    const bizIndex = cleanLines.indexOf(businessLine);
+    // check next 2-3 lines for proper name pattern
+    for (let i = bizIndex + 1; i < bizIndex + 3 && i < cleanLines.length; i++) {
+      const candidate = cleanLines[i];
+      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/.test(candidate) && candidate.length < 30) {
+        contactLine = candidate;
+        break;
       }
     }
   }
