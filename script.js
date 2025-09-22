@@ -65,8 +65,21 @@ window.addEventListener("load", () => {
     document.getElementById("email").value = emailMatches ? emailMatches.join(", ") : "";
 
     // Address - last 2 lines (ya jitna ho) join
-    document.getElementById("address").value = lines.slice(-2).join(" ");
+   // document.getElementById("address").value = lines.slice(-2).join(",");
+   // Address extraction logic
+let addressMatches = [];
+
+// Split by line and check har line me address related keyword hai ya nahi
+lines.forEach(line => {
+  if (
+    /\b(road|rd\.|street|st\.|lane|ln\.|block|sector|near|opp\.|tower|avenue|city|state|pincode|india|dist\.|taluka|village)\b/i.test(line) ||
+    /\b\d{6}\b/.test(line) // Indian pincode match
+  ) {
+    addressMatches.push(line);
   }
 });
-  
 
+// Agar kuch mila toh join karo, otherwise blank chhodo
+document.getElementById("address").value =
+  addressMatches.length > 0 ? addressMatches.join(", ") : "";
+  }});
