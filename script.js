@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
   }
 
   // --- FORM PAGE ---
-  if (document.getElementById("businessName")) {
+  /*if (document.getElementById("businessName")) {
     const ocrText = localStorage.getItem("ocrText");
     if (!ocrText) return;
 
@@ -111,7 +111,67 @@ window.addEventListener("load", () => {
     document.getElementById("email").value = email;
     document.getElementById("address").value = address;
   }
+});*/
+
+// --- FORM PAGE (Auto-fill) ---
+window.addEventListener("load", () => {
+  if (!document.getElementById("businessName")) return;
+
+  const ocrText = localStorage.getItem("ocrText");
+  if (!ocrText) return;
+
+  const lines = ocrText.split("\n").map(l => l.trim()).filter(l => l);
+  console.log("Extracted Lines:", lines);
+
+  // 📧 Emails (multiple allowed)
+  const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi);
+  const email = emailMatches ? emailMatches.join(", ") : "";
+
+  // 📞 Phone numbers (filter pincode & address numbers)
+  let phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g) || [];
+  phoneMatches = phoneMatches.filter(num => {
+    // Remove if it looks like a pincode (6 digits only)
+    if (/^\d{6}$/.test(num.replace(/\D/g, ""))) return false;
+    // Remove if address-related words nearby
+    return !/(road|sector|street|lane|block|gate|city|state|pin|india)/i.test(num);
+  });
+  const phone = phoneMatches.join(", ");
+
+  // 🏢 Business Name
+  let businessLine = lines.find(l =>
+    /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
+  );
+  if (!businessLine) {
+    businessLine = lines.find(l => !/\d/.test(l) && !/@/.test(l) && l.length > 3) || "";
+  }
+
+  // 👤 Contact Person
+  let contactLine = lines.find(l =>
+    /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
+  );
+  if (!contactLine) {
+    contactLine = lines.find(l => /^[A-Z][a-z]+ [A-Z][a-z]+$/.test(l));
+  }
+
+  // 🏠 Address (ignore phone-like numbers, allow pincode)
+  let addressMatches = [];
+  lines.forEach(line => {
+    if (/(road|street|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
+      addressMatches.push(line);
+    } else if (/\b\d{6}\b/.test(line)) {  // pincode
+      addressMatches.push(line);
+    }
+  });
+  let address = addressMatches.length > 0 ? addressMatches.join(", ") : "";
+
+  // ✅ Fill Form Fields
+  document.getElementById("businessName").value = businessLine;
+  document.getElementById("contactPerson").value = contactLine || "";
+  document.getElementById("phone").value = phone;
+  document.getElementById("email").value = email;
+  document.getElementById("address").value = address;
 });
+
 
 
 
