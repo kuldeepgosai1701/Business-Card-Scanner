@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  /*// --- INDEX PAGE ---
+  // --- INDEX PAGE ---
   if (document.getElementById("scanBtn")) {
     document.getElementById("scanBtn").addEventListener("click", async () => {
       const file = document.getElementById("cardImage").files[0];
@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
   }
 
   // --- FORM PAGE ---
-  /*if (document.getElementById("businessName")) {
+  if (document.getElementById("businessName")) {
     const ocrText = localStorage.getItem("ocrText");
     if (!ocrText) return;
 
@@ -112,7 +112,7 @@ window.addEventListener("load", () => {
     document.getElementById("address").value = address;
   }
 });
-
+/*
 // --- FORM PAGE (Auto-fill) ---
 window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
@@ -171,7 +171,7 @@ window.addEventListener("load", () => {
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
 });
-});*/
+});
 
 // --- INDEX PAGE (Scan & Save OCR Text) ---
 document.getElementById("scanBtn")?.addEventListener("click", async () => {
@@ -265,7 +265,7 @@ window.addEventListener("load", () => {
   document.getElementById("phone").value = phone;
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
-});
+});*/
 
 
 
