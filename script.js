@@ -65,7 +65,7 @@ async function extractText(file) {
     !phoneMatches.some(p => line.includes(p))
   );
 
-  // 🏢 Business Name
+  // 🏢 Business Name(case 1)
   /*let businessLine = lines.find(l =>
     /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
   );
@@ -74,7 +74,7 @@ async function extractText(file) {
     businessLine = lines.find(l => !/\d/.test(l) && !/@/.test(l) && l.length > 2) || "";
   }*/
  
- // 🏢 Business Name
+ /* 🏢 Business Name(case 2)
 let businessLine = lines.find(l =>
   /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
 );
@@ -82,10 +82,10 @@ let businessLine = lines.find(l =>
 if (!businessLine) {
   // Fallback: pick first line that is not a personal name
   businessLine = lines.find(l => !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(l) && l.length > 2) || "";
-}
+}*/
 
 
-  // 👤 Contact Person
+  // 👤 Contact (case 1)
   /*let contactLine = lines.find(l =>
     /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
   );
@@ -99,7 +99,7 @@ if (!businessLine) {
       }
     }
   }*/
- // 👤 Contact Person
+ /* 👤 Contact Person(case 2)
 let contactLine = lines.find(l =>
   /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
 );
@@ -117,8 +117,84 @@ if (!contactLine) {
       }
     }
   }
+}*/
+
+    // 🏢 Business Name(case 3)
+/*let businessLine = lines.find(l =>
+  /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Industries)/i.test(l)
+);
+
+if (!businessLine) {
+  // fallback → pick longest line which is not a simple personal name
+  businessLine = lines.reduce((longest, line) => {
+    if (
+      line.length > (longest?.length || 0) &&
+      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(line) && // not a typical name
+      !/\d{10}/.test(line) && // not phone
+      !/@/.test(line) // not email
+    ) {
+      return line;
+    }
+    return longest;
+  }, "");
+}*/
+
+// 🏢 Business Name(case 4)
+let businessIndex = lines.findIndex(l =>
+  /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Jewelers|Industries)/i.test(l)
+);
+
+let businessLine = "";
+if (businessIndex !== -1) {
+  businessLine = lines[businessIndex];
+
+  // 👆 Check previous line also (could be part of business name)
+  if (businessIndex > 0) {
+    let prevLine = lines[businessIndex - 1];
+    if (
+      prevLine.length > 2 &&
+      !/^\d+$/.test(prevLine) &&         // not just numbers
+      !/@/.test(prevLine) &&            // not email
+      !/\d{10}/.test(prevLine) &&       // not phone
+      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(prevLine) // not a personal name
+    ) {
+      businessLine = prevLine + " " + businessLine; // merge
+    }
+  }
+} else {
+  // fallback → pick longest non-name line
+  businessLine = lines.reduce((longest, line) => {
+    if (
+      line.length > (longest?.length || 0) &&
+      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(line) &&
+      !/\d{10}/.test(line) &&
+      !/@/.test(line)
+    ) {
+      return line;
+    }
+    return longest;
+  }, "");
 }
 
+
+// 👤 Contact (case 3)
+let contactLine = lines.find(l =>
+  /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head|MD|Chairman|Owner)/i.test(l)
+);
+
+if (!contactLine) {
+  const businessIndex = lines.indexOf(businessLine);
+  // search nearby lines that look like personal names
+  for (let i = businessIndex - 1; i <= businessIndex + 2; i++) {
+    if (i >= 0 && i < lines.length) {
+      let candidate = lines[i].trim();
+      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+){1,2}$/.test(candidate)) {
+        contactLine = candidate;
+        break;
+      }
+    }
+  }
+}
 
   // 🏠 Address
   let addressMatches = [];
