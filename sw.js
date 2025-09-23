@@ -3,7 +3,9 @@ const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './style.css', // if external CSS
+   './form.html',
+   './script.js',
+   './style.css', // if external CSS
   './icon-192.png',
   './icon-512.png'
 ];

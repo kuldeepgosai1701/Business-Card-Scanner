@@ -250,3 +250,25 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
     alert("Download cancelled!");
   }
 });
+
+// ================= PWA Install Prompt =================
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // Prevent automatic prompt
+  deferredPrompt = e;
+
+  // Show custom install button
+  const installBtn = document.createElement('button');
+  installBtn.textContent = "Install App";
+  installBtn.style = "position: fixed; bottom: 20px; right: 20px; padding: 10px; font-size: 16px; z-index: 1000;";
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    deferredPrompt.prompt(); // Show the native install prompt
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('User choice:', outcome);
+    deferredPrompt = null;
+  });
+});
+
