@@ -66,28 +66,59 @@ async function extractText(file) {
   );
 
   // 🏢 Business Name
-  let businessLine = lines.find(l =>
+  /*let businessLine = lines.find(l =>
     /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
   );
   if (!businessLine) {
     // Agar keyword wala nahi mila to sabse upar wali non-email/phone line
     businessLine = lines.find(l => !/\d/.test(l) && !/@/.test(l) && l.length > 2) || "";
-  }
+  }*/
+ 
+ // 🏢 Business Name
+let businessLine = lines.find(l =>
+  /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
+);
+
+if (!businessLine) {
+  // Fallback: pick first line that is not a personal name
+  businessLine = lines.find(l => !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(l) && l.length > 2) || "";
+}
+
 
   // 👤 Contact Person
-  let contactLine = lines.find(l =>
+  /*let contactLine = lines.find(l =>
     /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
   );
   if (!contactLine) {
     // Agar keyword nahi mila to business name ke baad wali clean line
     const businessIndex = lines.indexOf(businessLine);
-    if (businessIndex >= 0 && businessIndex + 1 < lines.length) {
+    if (businessIndex >= 0 && businessIndex + 1 < lines.length) 
       let candidate = lines[businessIndex + 1];
       if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/.test(candidate)) {
         contactLine = candidate;
       }
     }
+  }*/
+ // 👤 Contact Person
+let contactLine = lines.find(l =>
+  /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
+);
+
+if (!contactLine) {
+  // Fallback: pick first clean line after businessLine that looks like a name
+  const businessIndex = lines.indexOf(businessLine);
+  if (businessIndex >= 0) {
+    for (let i = businessIndex + 1; i < lines.length; i++) {
+      let candidate = lines[i].trim();
+      // Simple personal name detection: 2-3 words, capitalized, no numbers/special chars
+      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(candidate)) {
+        contactLine = candidate;
+        break;
+      }
+    }
   }
+}
+
 
   // 🏠 Address
   let addressMatches = [];
