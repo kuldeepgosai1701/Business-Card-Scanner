@@ -1,10 +1,4 @@
-// ===== Handle mobile file input =====
-const cardInput = document.getElementById("cardImage");
 
-// Listen to file selection (works for camera + gallery)
-cardInput.addEventListener("change", (e) => {
-  console.log("File selected:", cardInput.files[0]);
-});
 
 
 // OCR Scan
