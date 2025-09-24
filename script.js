@@ -64,6 +64,45 @@ async function extractText(file) {
   });
 }
 
+   // 2️⃣ File input listener (yahi tumhare question ka code)
+const cardInput = document.getElementById("cardImage");
+cardInput.addEventListener("change", async (e) => {
+  const file = cardInput.files[0];
+  if (!file) return;
+
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
+  try {
+    const text = await extractText(file);
+    localStorage.setItem("ocrText", text);
+    // Direct redirect to form page
+    window.location.href = "form.html";
+  } catch (err) {
+    alert("OCR scan failed: " + err);
+  } finally {
+    loader.style.display = "none";
+  }
+});
+
+// 3️⃣ Optional: Scan button (type="button") - agar user manually scan bhi kare
+document.getElementById("scanBtn").addEventListener("click", async () => {
+  const file = cardInput.files[0];
+  if (!file) {
+    alert("Please upload or capture an image!");
+    return;
+  }
+
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
+  const text = await extractText(file);
+  localStorage.setItem("ocrText", text);
+  loader.style.display = "none";
+  window.location.href = "form.html";
+});
+
+
  window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
 
