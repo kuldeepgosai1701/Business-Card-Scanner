@@ -1,8 +1,15 @@
+// Get the file input element
+const cardInput = document.getElementById("cardImage");
+
+// Listen for file selection (camera or gallery)
+cardInput.addEventListener("change", (e) => {
+  console.log("File selected:", cardInput.files[0]);
+});
 
 
 
 // OCR Scan
-document.getElementById("scanBtn")?.addEventListener("click", async () => {
+/*document.getElementById("scanBtn")?.addEventListener("click", async () => {
   const file = document.getElementById("cardImage").files[0];
   if (!file) {
     alert("Please upload or capture an image!");
@@ -25,9 +32,26 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
 
   // ✅ Direct form.html pe redirect
   window.location.href = "form.html";
+});*/
+
+  document.getElementById("scanBtn").addEventListener("click", async () => {
+  const file = cardInput.files[0];
+  if (!file) {
+    alert("Please upload or capture an image!");
+    return;
+  }
+
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
+  const text = await extractText(file);
+
+  localStorage.setItem("ocrText", text);
+  loader.style.display = "none";
+
+  window.location.href = "form.html";
 });
 
-  
 async function extractText(file) {
   return new Promise((resolve, reject) => {
     Tesseract.recognize(
@@ -68,79 +92,7 @@ async function extractText(file) {
     !phoneMatches.some(p => line.includes(p))
   );
 
-  // 🏢 Business Name(case 1)
-  /*let businessLine = lines.find(l =>
-    /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
-  );
-  if (!businessLine) {
-    // Agar keyword wala nahi mila to sabse upar wali non-email/phone line
-    businessLine = lines.find(l => !/\d/.test(l) && !/@/.test(l) && l.length > 2) || "";
-  }*/
- 
- /* 🏢 Business Name(case 2)
-let businessLine = lines.find(l =>
-  /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies)/i.test(l)
-);
 
-if (!businessLine) {
-  // Fallback: pick first line that is not a personal name
-  businessLine = lines.find(l => !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(l) && l.length > 2) || "";
-}*/
-
-
-  // 👤 Contact (case 1)
-  /*let contactLine = lines.find(l =>
-    /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
-  );
-  if (!contactLine) {
-    // Agar keyword nahi mila to business name ke baad wali clean line
-    const businessIndex = lines.indexOf(businessLine);
-    if (businessIndex >= 0 && businessIndex + 1 < lines.length) 
-      let candidate = lines[businessIndex + 1];
-      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/.test(candidate)) {
-        contactLine = candidate;
-      }
-    }
-  }*/
- /* 👤 Contact Person(case 2)
-let contactLine = lines.find(l =>
-  /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head)/i.test(l)
-);
-
-if (!contactLine) {
-  // Fallback: pick first clean line after businessLine that looks like a name
-  const businessIndex = lines.indexOf(businessLine);
-  if (businessIndex >= 0) {
-    for (let i = businessIndex + 1; i < lines.length; i++) {
-      let candidate = lines[i].trim();
-      // Simple personal name detection: 2-3 words, capitalized, no numbers/special chars
-      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(candidate)) {
-        contactLine = candidate;
-        break;
-      }
-    }
-  }
-}*/
-
-    // 🏢 Business Name(case 3)
-/*let businessLine = lines.find(l =>
-  /(University|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Industries)/i.test(l)
-);
-
-if (!businessLine) {
-  // fallback → pick longest line which is not a simple personal name
-  businessLine = lines.reduce((longest, line) => {
-    if (
-      line.length > (longest?.length || 0) &&
-      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(line) && // not a typical name
-      !/\d{10}/.test(line) && // not phone
-      !/@/.test(line) // not email
-    ) {
-      return line;
-    }
-    return longest;
-  }, "");
-}*/
 
 // 🏢 Business Name(case 4)
 let businessIndex = lines.findIndex(l =>
