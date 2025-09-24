@@ -1,3 +1,11 @@
+// 📸 Prevent page reload when selecting from Camera
+document.getElementById("cardImage")?.addEventListener("change", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  console.log("Image selected:", e.target.files[0]);
+});
+
+
 // OCR Scan
 document.getElementById("scanBtn")?.addEventListener("click", async () => {
   const file = document.getElementById("cardImage").files[0];
