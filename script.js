@@ -1,4 +1,10 @@
+// ===== Handle mobile file input =====
+const cardInput = document.getElementById("cardImage");
 
+// Listen to file selection (works for camera + gallery)
+cardInput.addEventListener("change", (e) => {
+  console.log("File selected:", cardInput.files[0]);
+});
 
 
 // OCR Scan
@@ -274,12 +280,4 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = null;
   });
 });
-  // Prevent page reload on mobile file input
-document.getElementById("cardImage").addEventListener("click", (e) => {
-  e.preventDefault(); // stop default camera behaviour
-});
 
-// ✅ Instead, listen to file change
-document.getElementById("cardImage").addEventListener("change", (e) => {
-  e.stopPropagation(); // avoid reload issues
-});                                                                                      
