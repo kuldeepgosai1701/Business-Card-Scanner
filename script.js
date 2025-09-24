@@ -271,4 +271,4 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = null;
   });
 });
-
+                                                                                        
