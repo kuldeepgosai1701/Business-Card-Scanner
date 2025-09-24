@@ -1,12 +1,4 @@
-// Prevent page reload on mobile file input
-document.getElementById("cardImage").addEventListener("click", (e) => {
-  e.preventDefault(); // stop default camera behaviour
-});
 
-// ✅ Instead, listen to file change
-document.getElementById("cardImage").addEventListener("change", (e) => {
-  e.stopPropagation(); // avoid reload issues
-});
 
 
 // OCR Scan
@@ -282,4 +274,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = null;
   });
 });
-                                                                                        
+  // Prevent page reload on mobile file input
+document.getElementById("cardImage").addEventListener("click", (e) => {
+  e.preventDefault(); // stop default camera behaviour
+});
+
+// ✅ Instead, listen to file change
+document.getElementById("cardImage").addEventListener("change", (e) => {
+  e.stopPropagation(); // avoid reload issues
+});                                                                                      
