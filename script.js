@@ -33,11 +33,20 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
 });*/
 
 // This part is good, no change needed. It prevents the reload if the file input is in a form.
+
 document.getElementById("cardImage")?.addEventListener("change", (e) => {
   e.preventDefault();
   e.stopPropagation();
-  console.log("Image selected:", e.target.files[0]);
+
+   const file = e.target.files[0];
+     if (!file) {
+     console.log("File selection cancelled.");
+     return;
+    }
+    console.log("Image selected:", file);
 });
+   
+  
 
 // Use the existing logic triggered by the scan button
 document.getElementById("scanBtn")?.addEventListener("click", async () => {
@@ -56,6 +65,7 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
   window.location.href = "form.html";
 });
 
+ 
   
 async function extractText(file) {
   return new Promise((resolve, reject) => {

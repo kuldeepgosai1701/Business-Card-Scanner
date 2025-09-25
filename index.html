@@ -117,16 +117,20 @@
 
     <!-- Image Upload -->
     <input type="file" id="cardImage" class="file-input" accept="image/*" capture="environment">
+   <div id="loader">⏳ Scanning in progress...</div>
 
-
-    <!-- Buttons -->
-    <button id="scanBtn" class="scan-btn">
-  <span class="material-icons"> Scan</span> Scan
-</button>
-
-    <!-- Loader -->
-    <div id="loader">⏳ Scanning in progress...</div>
-</div>
+ <div class="buttons">
+            <button id="scanBtn" class="scan-btn">
+            <span class="material-icons">camera_alt</span> Scan Card
+        </button>
+        
+        <button id="installBtn" class="scan-btn" style="display: none; background: #2196f3;">
+            <span class="material-icons">download</span> Install App
+        </button>
+    </div>
+    
+     <div id="loader">⏳ Scanning in progress...</div>
+     </div>
   
 <script src="script.js">
   
