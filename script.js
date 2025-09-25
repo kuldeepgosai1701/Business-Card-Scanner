@@ -32,14 +32,14 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
   window.location.href = "form.html";
 });*/
 
-document.getElementById("scannerForm")?.addEventListener("submit", (e) => {
+/*document.getElementById("scannerForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
-});
+});*/
 
 
 document.getElementById("cardImage")?.addEventListener("change", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+  //e.preventDefault();
+  //e.stopPropagation();
 
    const file = e.target.files[0];
      if (!file) {
