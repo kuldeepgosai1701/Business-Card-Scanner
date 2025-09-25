@@ -32,6 +32,10 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
   window.location.href = "form.html";
 });*/
 
+document.getElementById("scannerForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+});
+
 // This part is good, no change needed. It prevents the reload if the file input is in a form.
 
 document.getElementById("cardImage")?.addEventListener("change", (e) => {

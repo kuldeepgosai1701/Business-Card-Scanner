@@ -113,10 +113,11 @@
 </head>
 <body>
   <div class="scanner-container">
+     <form id="scannerForm"> 
     <h1>📇 Business Card Scanner</h1>
 
     <!-- Image Upload -->
-    <input type="file" id="cardImage" class="file-input" accept="image/*" capture="environment">
+    <input type="file" id="cardImage" class="file-input" accept="image/*">
    <div id="loader">⏳ Scanning in progress...</div>
 
  <div class="buttons">
@@ -130,6 +131,7 @@
     </div>
     
      <div id="loader">⏳ Scanning in progress...</div>
+     </form>
      </div>
   
 <script src="script.js">
