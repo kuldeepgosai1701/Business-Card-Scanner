@@ -284,7 +284,7 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
 });
 
 // ================= PWA Install Prompt =================
-let deferredPrompt;
+/*let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault(); // Prevent automatic prompt
   deferredPrompt = e;
@@ -297,6 +297,28 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
   installBtn.addEventListener('click', async () => {
     installBtn.style.display = 'none';
+    deferredPrompt.prompt(); // Show the native install prompt
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('User choice:', outcome);
+    deferredPrompt = null;
+  });
+});*/
+
+// ================= PWA Install Prompt =================
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn'); // Get the new button
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // Prevent automatic prompt
+  deferredPrompt = e;
+  
+  // Show the custom install button when the prompt is available
+  if (installBtn) {
+    installBtn.style.display = 'flex'; // Use 'flex' to match your other buttons' display style
+  }
+
+  installBtn?.addEventListener('click', async () => {
+    installBtn.style.display = 'none'; // Hide button once clicked
     deferredPrompt.prompt(); // Show the native install prompt
     const { outcome } = await deferredPrompt.userChoice;
     console.log('User choice:', outcome);
