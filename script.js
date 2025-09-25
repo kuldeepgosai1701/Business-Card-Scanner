@@ -1,5 +1,5 @@
 // 📸 Prevent page reload when selecting from Camera
-document.getElementById("cardImage")?.addEventListener("change", (e) => {
+/*document.getElementById("cardImage")?.addEventListener("change", (e) => {
   e.preventDefault();
   e.stopPropagation();
   console.log("Image selected:", e.target.files[0]);
@@ -29,6 +29,30 @@ document.getElementById("scanBtn")?.addEventListener("click", async () => {
   loader.style.display = "none";
 
   // ✅ Direct form.html pe redirect
+  window.location.href = "form.html";
+});*/
+
+// This part is good, no change needed. It prevents the reload if the file input is in a form.
+document.getElementById("cardImage")?.addEventListener("change", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  console.log("Image selected:", e.target.files[0]);
+});
+
+// Use the existing logic triggered by the scan button
+document.getElementById("scanBtn")?.addEventListener("click", async () => {
+  const file = document.getElementById("cardImage").files[0];
+  if (!file) {
+    alert("Please upload or capture an image!");
+    return;
+  }
+
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
+  const text = await extractText(file);
+  localStorage.setItem("ocrText", text);
+  loader.style.display = "none";
   window.location.href = "form.html";
 });
 
