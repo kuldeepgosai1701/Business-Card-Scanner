@@ -1,6 +1,6 @@
 document.getElementById("cardImage")?.addEventListener("change", (e) => {
   
-
+   e.preventDefault()
    const file = e.target.files[0];
      if (!file) {
      console.log("File selection cancelled.");
@@ -12,7 +12,8 @@ document.getElementById("cardImage")?.addEventListener("change", (e) => {
   
 
 // Use the existing logic triggered by the scan button
-document.getElementById("scanBtn")?.addEventListener("click", async () => {
+document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
+  e.preventDefault()
   const file = document.getElementById("cardImage").files[0];
   if (!file) {
     alert("Please upload or capture an image!");

@@ -145,26 +145,26 @@
     const loader = document.getElementById('loader');
 
     // Add an event listener to the file input for when its value changes (i.e., a file is selected)
-    cardImageInput.addEventListener('change', function(event) {
-        // Prevent any default action (though not strictly necessary here, it's good practice)
-        event.preventDefault(); 
+    // cardImageInput.addEventListener('change', function(event) {
+    //     // Prevent any default action (though not strictly necessary here, it's good practice)
+    //     event.preventDefault(); 
         
-        // Check if a file was actually selected
-        if (this.files && this.files[0]) {
-            const file = this.files[0];
-            console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
+    //     // Check if a file was actually selected
+    //     if (this.files && this.files[0]) {
+    //         const file = this.files[0];
+    //         console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
             
-            // Show the loader
-            loader.style.display = 'block';
+    //         // Show the loader
+    //         loader.style.display = 'block';
             
             
             
-            simulateScan(file);
+    //         simulateScan(file);
             
-        } else {
-            console.log('No file was selected.');
-        }
-    });
+    //     } else {
+    //         console.log('No file was selected.');
+    //     }
+    // });
 
     function simulateScan(file) {
        
