@@ -113,12 +113,12 @@
 </head>
 <body>
   <div class="scanner-container">
-     <form id="scannerForm"> 
+     <form id="scannerForm"  onsubmit="return false;"> 
     <h1>📇 Business Card Scanner</h1>
 
     <!-- Image Upload -->
-    <form id="uploadForm" onsubmit="return false;">
-    <input type="file" id="cardImage" class="file-input" accept="image/*" capture="environment" >
+    
+    <input type="file" id="cardImage" class="file-input" accept="image/*" >
     </form>
    <div id="loader">⏳ Scanning in progress...</div>
 
