@@ -37,15 +37,15 @@
       color: #333;
       font-size: 15px; 
     }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px; 
-      margin-bottom: 20px; 
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px; 
-    }
+   
+input, textarea {
+  width: 100%;          /* full width for mobile */
+  font-size: 16px;      /* recommended for mobile tap */
+  padding: 12px;        /* enough space for fingers */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box; /* ensures padding doesn't break width */
+}
 
     textarea {
       resize: none;

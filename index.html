@@ -28,36 +28,20 @@
   }
 
   .scanner-container {
-    width: 90%;
-    max-width: 400px;
-    padding: 25px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    text-align: center;
-  }
+  width: 95%;
+  max-width: 400px;
+  padding: 20px;
+  margin: 10px auto;
+}
+
 
   h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-  }
+  font-size: 5vw; /* scales with screen width */
+  font-weight: bold;
+  color: #333;
+}
 
-  .file-input {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px dashed #aaa;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: border-color 0.3s;
-  }
-
+ 
   .file-input:hover {
     border-color: #4caf50;
   }
@@ -69,18 +53,11 @@
   }
 
   .buttons button {
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+    width: 100%; 
+    font-size: 4vw;  /* responsive font size */
+    padding: 3vw;
+}
+
 
   .scan-btn {
     background: #4caf50;
@@ -108,6 +85,28 @@
     font-size: 16px;
     color: #333;
     font-weight: bold;
+
+    /* Small screen adjustments */
+@media (max-width: 350px) {
+  h1 {
+    font-size: 6vw;  /* slightly bigger for readability */
+  }
+
+  .file-input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .buttons button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #loader {
+    font-size: 14px;
+  }
+}
+
   }
 </style>
 </head>
