@@ -17,6 +17,16 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
   
   <style>
+  /*body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #4caf50, #465765);
+  }*/
+
   body {
     display: flex;
     justify-content: center;
@@ -24,19 +34,38 @@
     height: 100vh;
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #4caf50, #2196f3);
-  }
+    background: linear-gradient(135deg, #4caf50, #465765);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
 
-  .scanner-container {
+@keyframes gradientBG {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+  /*.scanner-container {
   width: 95%;
   max-width: 400px;
   padding: 20px;
   margin: 10px auto;
+}*/
+.scanner-container {
+    width: 95%;
+    max-width: 400px;
+    padding: 30px;
+    margin: 10px auto;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 
+
   h1 {
-  font-size: 5vw; /* scales with screen width */
+  font-size: 5vw; 
   font-weight: bold;
   color: #333;
 }
@@ -52,9 +81,9 @@
     gap: 15px;
   }
 
-  .buttons button {
+  /*.buttons button {
     width: 100%; 
-    font-size: 4vw;  /* responsive font size */
+    font-size: 4vw;  
     padding: 3vw;
 }
 
@@ -67,29 +96,61 @@
   .scan-btn:hover {
     background: #45a049;
     transform: scale(1.05);
-  }
+  }*/
+  .buttons button {
+    width: 100%;
+    font-size: 4vw;
+    padding: 3vw;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
 
-  /*.form-btn {
+.scan-btn {
+    background: #4caf50;
+    color: #fff;
+}
+
+.scan-btn:hover {
+    background: #45a049;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#installBtn {
     background: #2196f3;
     color: #fff;
-  }
-
-  .form-btn:hover {
-    background: #1e88e5;
-    transform: scale(1.05);
-  }*/
-
-  #loader {
+}
+  /*#loader {
+    display: none;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;*/
+    #loader {
     display: none;
     margin-top: 15px;
     font-size: 16px;
     color: #333;
     font-weight: bold;
+    animation: blink 1s infinite;
+}
 
-    /* Small screen adjustments */
+@keyframes blink {
+    0%, 100% {opacity: 1;}
+    50% {opacity: 0.3;}
+}
+
+
+    
 @media (max-width: 350px) {
   h1 {
-    font-size: 6vw;  /* slightly bigger for readability */
+    font-size: 6vw;  
   }
 
   .file-input {
@@ -106,16 +167,12 @@
     font-size: 14px;
   }
 }
-
-  }
 </style>
 </head>
+
 <body>
   <div class="scanner-container">
-     
-    <h1>📇 Business Card Scanner</h1>
-
-    <!-- Image Upload -->
+     <h1>📇 Business Card Scanner</h1>
     
     <input type="file" id="cardImage" class="file-input" accept="image/*">
   
@@ -142,33 +199,7 @@
   // Get the file input element
     const cardImageInput = document.getElementById('cardImage');
     const loader = document.getElementById('loader');
-
-    // Add an event listener to the file input for when its value changes (i.e., a file is selected)
-    // cardImageInput.addEventListener('change', function(event) {
-    //     // Prevent any default action (though not strictly necessary here, it's good practice)
-    //     event.preventDefault(); 
-        
-    //     // Check if a file was actually selected
-    //     if (this.files && this.files[0]) {
-    //         const file = this.files[0];
-    //         console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
-            
-    //         // Show the loader
-    //         loader.style.display = 'block';
-            
-            
-            
-    //         simulateScan(file);
-            
-    //     } else {
-    //         console.log('No file was selected.');
-    //     }
-    // });
-
     function simulateScan(file) {
-       
-
-        
         console.log('Simulating scan for file:', file.name);
         setTimeout(() => {
             console.log('Scan simulated! File successfully uploaded and processed.');
@@ -184,6 +215,5 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-
 </body>
 </html>
