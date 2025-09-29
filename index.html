@@ -27,7 +27,7 @@
     background: linear-gradient(135deg, #4caf50, #465765);
   }*/
 
-  body {
+  /*body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,7 +50,7 @@
   max-width: 400px;
   padding: 20px;
   margin: 10px auto;
-}*/
+}
 .scanner-container {
     width: 95%;
     max-width: 400px;
@@ -96,7 +96,7 @@
   .scan-btn:hover {
     background: #45a049;
     transform: scale(1.05);
-  }*/
+  }
   .buttons button {
     width: 100%;
     font-size: 4vw;
@@ -131,7 +131,7 @@
     margin-top: 15px;
     font-size: 16px;
     color: #333;
-    font-weight: bold;*/
+    font-weight: bold;
     #loader {
     display: none;
     margin-top: 15px;
@@ -166,6 +166,111 @@
   #loader {
     font-size: 14px;
   }
+}*/
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.scanner-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+    text-align: center;
+    color: #fff;
+}
+
+h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.file-input {
+    display: none;
+}
+.custom-file-upload {
+    background: #2196f3;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+.custom-file-upload:hover {
+    background: #1976d2;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.buttons button {
+    font-size: 1rem;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.scan-btn {
+    background: #4caf50;
+    color: #fff;
+}
+.scan-btn:hover {
+    background: #43a047;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+#installBtn {
+    background: #ff9800;
+    color: #fff;
+}
+#installBtn:hover {
+    background: #f57c00;
+}
+
+#loader {
+    display: none;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%, 100% {opacity: 1;}
+    50% {opacity: 0.3;}
 }
 </style>
 </head>
@@ -173,12 +278,8 @@
 <body>
   <div class="scanner-container">
      <h1>📇 Business Card Scanner</h1>
-    
     <input type="file" id="cardImage" class="file-input" accept="image/*">
-  
-
-
- <div class="buttons">
+  <div class="buttons">
             <button id="scanBtn" class="scan-btn" type="button">
             <span class="material-icons">camera_alt</span> Scan Card
         </button>
@@ -187,14 +288,10 @@
             <span class="material-icons">download</span> Install App
         </button>
     </div>
-    
-     <div id="loader">⏳ Scanning in progress...</div>
+    <div id="loader">⏳ Scanning in progress...</div>
      </div>
-  
-<script src="script.js">
-  
-</script>
-
+  <script src="script.js">
+  </script>
 <script>
   // Get the file input element
     const cardImageInput = document.getElementById('cardImage');
