@@ -113,14 +113,14 @@
 </head>
 <body>
   <div class="scanner-container">
-     <form id="scannerForm"  onsubmit="return false;"> 
+     
     <h1>📇 Business Card Scanner</h1>
 
     <!-- Image Upload -->
     
     <input type="file" id="cardImage" class="file-input" accept="image/*" capture="environment">
-    </form>
-   <div id="loader">⏳ Scanning in progress...</div>
+  
+
 
  <div class="buttons">
             <button id="scanBtn" class="scan-btn">
@@ -133,7 +133,6 @@
     </div>
     
      <div id="loader">⏳ Scanning in progress...</div>
-     </form>
      </div>
   
 <script src="script.js">
@@ -141,6 +140,45 @@
 </script>
 
 <script>
+  // Get the file input element
+    const cardImageInput = document.getElementById('cardImage');
+    const loader = document.getElementById('loader');
+
+    // Add an event listener to the file input for when its value changes (i.e., a file is selected)
+    cardImageInput.addEventListener('change', function(event) {
+        // Prevent any default action (though not strictly necessary here, it's good practice)
+        event.preventDefault(); 
+        
+        // Check if a file was actually selected
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
+            
+            // 1. Show the loader
+            loader.style.display = 'block';
+            
+            // 2. Start the OCR process with Tesseract.js
+            // This is where you would call your scanning function (e.g., Tesseract.recognize)
+            // For now, let's just simulate the scan
+            
+            simulateScan(file);
+            
+        } else {
+            console.log('No file was selected.');
+        }
+    });
+
+    function simulateScan(file) {
+       
+
+        
+        console.log('Simulating scan for file:', file.name);
+        setTimeout(() => {
+            console.log('Scan simulated! File successfully uploaded and processed.');
+            loader.style.display = 'none';
+            alert('Card scanned and processed! Check the console for the "file selected" message.');
+        }, 3000); // Wait 3 seconds to simulate the OCR process
+    }
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
