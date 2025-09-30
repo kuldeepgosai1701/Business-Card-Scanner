@@ -18,42 +18,37 @@
   
   <style>
 
-  body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* ❌ no scroll */
   font-family: 'Roboto', sans-serif;
   background: white;
-  height: 100vh;
-  display: flex;
 }
-
 .page-container {
-  min-height: 100vh;
+  height: 100vh;              /* full screen */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between; /* top + bottom spacing */
   align-items: center;
-  width: 100%;
-  padding: 20px;
-  height: 100vh;
+  padding: 0; /* remove extra padding */
 }
 
-
 .scanner-container {
-  flex: 1;
-  max-height: 65%;
+  flex: 1; /* take remaining top space */
   width: 100%;
- 
-  background: #780505;
-  border-radius: 15px;
+  background: #0e0990;
+  border-radius: 0 0 15px 15px;  /* only bottom rounded */
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 
   display: flex;
   flex-direction: column;
-  justify-content: center;  
-  align-items: center;      
+  justify-content: center;
+  align-items: center;
   text-align: center;
-
-  padding: 0 20px; 
+  padding: 20px;
 }
 
 
@@ -116,30 +111,25 @@
   flex-direction: column;
   gap: 15px;
 }
+
 .camera-btn {
   background: #ff7043;
   color: white;
-  
+  padding: 12px 25px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: clamp(14px, 4.5vw, 20px);
-  padding: 3vw 5vw;
-  
+  font-size: clamp(14px, 5vw, 18px);
   display: flex;
-  align-items: center;   /* vertically center text/icon inside button */
-  justify-content: center; /* horizontally center text/icon inside button */
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  
-  margin-top: 0; /* optional, ensures it's at the very top */
 }
-.camera-btn:hover {
-  background: #ff6a33;
-}
+.camera-btn:hover { background: #ff6a33; }
 .divider {
   display: flex;
   align-items: center;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .divider::before, .divider::after {
   content: "";
@@ -151,27 +141,21 @@
   color: #888;
   font-weight: bold;
 }
-
 .gallery-btn {
   border: 2px dashed #bbb;
-  
-  font-size: 28px;
+  padding: 12px 20px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: clamp(14px, 4.5vw, 20px);
-  padding: 3vw 5vw;
-  font-size: 20px;
+  font-size: clamp(14px, 5vw, 20px);
   font-weight: 600;
   color: #555;
   cursor: pointer;
   transition: 0.2s;
 }
-.gallery-btn:hover {
-  background: #f8f8f8;
-}
+.gallery-btn:hover { background: #f8f8f8; }
 
 
 .buttons button {
@@ -187,11 +171,11 @@
   gap: 8px;
 }
 
-/* Loader */
+
 #loader {
   display: none;
-  margin-top: 15px;
-  font-size: 15px;
+  margin-top: 8px;
+  font-size: 14px;
   color: #444;
   font-weight: bold;
 }
