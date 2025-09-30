@@ -17,31 +17,59 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
   
   <style>
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+
+  body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: #0d1b2a;   /* dark background like screenshot */
-}
-/* Container */
-.scanner-container {
-  width: 95%;
-  max-width: 400px;
-  padding: 30px 20px;
-  border-radius: 15px;
-  background: #fff;
-  text-align: center;
+  background: #0d1b2a;
+  height: 100vh;
+  display: flex;
 }
 
-/* Heading */
+/* Page container = full screen column */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 👈 top + bottom alignment */
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Scan container (top card) */
+.scanner-container {
+  width: 100%;
+  max-width: 400px;
+  background: #83ff7e;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  padding: 100px;
+  text-align: center;
+  height: 60vh;
+}
+
+
+h2 {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 6px;
+}
 h1 {
-  font-size: 7vw;
-  font-weight: bold;
-  color: #333;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0d6efd;
   margin-bottom: 20px;
+}
+.gallery-container{
+  width: 95%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  padding: 100px;
+  text-align: center;
+  height: 35vh;
+
 }
 
 /* File upload */
@@ -74,19 +102,38 @@ h1 {
   gap: 15px;
 }
 .camera-btn {
-  padding: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
   background: #ff7f50;
   color: #fff;
-  cursor: pointer;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(255, 127, 80, 0.4);
+  transition: 0.2s;
 }
+.camera-btn:hover {
+  background: #ff6a33;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid #ddd;
+}
+.divider span {
+  margin: 0 10px;
+  color: #888;
+  font-weight: bold;
+}
+
 .gallery-btn {
   border: 2px dashed #bbb;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,10 +141,12 @@ h1 {
   font-weight: 600;
   color: #555;
   cursor: pointer;
+  transition: 0.2s;
 }
-.gallery-btn input {
-  display: none;
+.gallery-btn:hover {
+  background: #f8f8f8;
 }
+
 
 .buttons button {
   padding: 16px;
@@ -119,13 +168,7 @@ h1 {
 .scan-btn:hover {
   background: #43a047;
 }
-#installBtn {
-  background: #2196f3;
-  color: #fff;
-}
-#installBtn:hover {
-  background: #1e88e5;
-}
+
 
 /* Loader */
 #loader {
@@ -141,31 +184,37 @@ h1 {
 </head>
 
 <body>
+  <div class="page-container">
+
   <div class="scanner-container">
-    <div class="icon-box">
-    <span class="material-icons" style="font-size:60px; color:#0d6efd;">upload_file</span>
-    </div>
     <h2>You need to Upload your</h2>
     <h1>Business Card</h1>
+  </div>
 
-       <label class="file-upload">
-      <span class="material-icons">upload_file</span> Upload Business Card
-    <input type="file" id="cardImage" class="file-input" accept="image/*">
-    </label>
-
-  <div class="buttons">
-    <div class="buttons">
+<div class = gallery-container>
+     <!-- Camera Button -->
   <button class="camera-btn">
-     <span class="material-icons">photo_camera</span> Use Camera
+    <span class="material-icons"></span> Use Camera
   </button>
-  <div style="margin:10px 0; font-weight:bold; color:#888;">OR</div>
+
+      <!-- Divider -->
+  <div class="divider"><span>OR</span></div>
+
+
+  <!-- Gallery Upload -->
   <label class="gallery-btn">
-     <span class="material-icons">folder_open</span> Select from Gallery
-     <input type="file" id="cardImage" class="file-input" accept="image/*,application/pdf">
+    <span class="material-icons">folder_open</span> Select from Gallery
+    <input type="file" id="cardImage" class="file-input" accept="image/*,application/pdf">
   </label>
-   </div>
+      
     <div id="loader">⏳ Scanning in progress...</div>
      </div>
+
+
+
+
+
+
   <script src="script.js">
   </script>
 <script>
