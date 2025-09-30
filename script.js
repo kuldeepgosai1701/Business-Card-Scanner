@@ -9,9 +9,7 @@ document.getElementById("cardImage")?.addEventListener("change", (e) => {
     console.log("Image selected:", file);
 });
    
-  
-
-// Use the existing logic triggered by the scan button
+  // Use the existing logic triggered by the scan button
 document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   e.preventDefault()
   const file = document.getElementById("cardImage").files[0];
@@ -29,8 +27,6 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   window.location.href = "form.html";
 });
 
- 
-  
 async function extractText(file) {
   return new Promise((resolve, reject) => {
     Tesseract.recognize(
@@ -71,10 +67,7 @@ async function extractText(file) {
     !phoneMatches.some(p => line.includes(p))
   );
 
- 
-
-    
-// 🏢 Business Name(case 4)
+ // 🏢 Business Name(case 4)
 let businessIndex = lines.findIndex(l =>
   /(University|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
 );
@@ -185,7 +178,6 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
     alert("Download cancelled!");
   }
 });
-
 
 // ================= PWA Install Prompt =================
 let deferredPrompt;

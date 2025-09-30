@@ -17,111 +17,6 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
   
   <style>
-  /*body {
-     display: flex; 
-     justify-content: center; 
-     align-items: center; 
-     height: 100vh; 
-     margin: 0; 
-     font-family: 'Roboto', sans-serif; 
-     background: linear-gradient(135deg, #4caf50, #2196f3); } 
-     
-     .scanner-container { width: 90%; max-width: 400px; padding: 25px; border-radius: 20px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); text-align: center; } h1 { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); } .file-input { display: block; width: 100%; padding: 12px; margin-bottom: 20px; border: 2px dashed #aaa; border-radius: 12px; background: rgba(255,255,255,0.6); cursor: pointer; transition: border-color 0.3s; } .file-input:hover { border-color: #4caf50; } .buttons { display: flex; flex-direction: column; gap: 15px; } .buttons button { padding: 12px; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: transform 0.2s, background 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; } .scan-btn { background: #4caf50; color: #fff; } .scan-btn:hover { background: #45a049; transform: scale(1.05); } /*.form-btn { background: #2196f3; color: #fff; } .form-btn:hover { background: #1e88e5; transform: scale(1.05); }  #loader { display: none; margin-top: 15px; font-size: 16px; color: #333; font-weight: bold; } */
-     
-     /*body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background: #f4f6f9;   
-}
-
-
-.scanner-container {
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-
-h1 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 18px;
-}
-
-
-.file-upload {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  background: #fafafa;
-  display: block;
-}
-.file-upload span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: #555;
-  font-weight: 500;
-  font-size: 14px;
-}
-.file-input {
-  display: none;
-}
-
-
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.buttons button {
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.scan-btn {
-  background: #4caf50;
-  color: #fff;
-}
-.scan-btn:hover {
-  background: #43a047;
-}
-#installBtn {
-  background: #2196f3;
-  color: #fff;
-}
-#installBtn:hover {
-  background: #1e88e5;
-}
-
-
-#loader {
-  display: none;
-  margin-top: 12px;
-  font-size: 14px;
-  color: #444;
-  font-weight: bold;
-}*/
-
 body {
   display: flex;
   justify-content: center;
@@ -129,19 +24,15 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: lab(62.1% -41.64 1.04); 
-  padding: 10px; /* mobile ke liye spacing */
+  background: #0d1b2a;   /* dark background like screenshot */
 }
-
 /* Container */
 .scanner-container {
   width: 95%;
-  max-width: 700px;   /* mobile pe bada dikhega */
-  padding: 10px 10px;
-  min-height: 50vh;
+  max-width: 400px;
+  padding: 30px 20px;
   border-radius: 15px;
-  background: #fffffff5;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  background: #fff;
   text-align: center;
 }
 
@@ -180,8 +71,34 @@ h1 {
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 15px;
 }
+.camera-btn {
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #ff7f50;
+  color: #fff;
+  cursor: pointer;
+}
+.gallery-btn {
+  border: 2px dashed #bbb;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+.gallery-btn input {
+  display: none;
+}
+
 .buttons button {
   padding: 16px;
   font-size: 7vw;
@@ -194,6 +111,7 @@ h1 {
   justify-content: center;
   gap: 8px;
 }
+
 .scan-btn {
   background: #4caf50;
   color: #fff;
@@ -224,7 +142,11 @@ h1 {
 
 <body>
   <div class="scanner-container">
-     <h1>📇 Business Card Scanner</h1>
+    <div class="icon-box">
+    <span class="material-icons" style="font-size:60px; color:#0d6efd;">upload_file</span>
+    </div>
+    <h2>You need to Upload your</h2>
+    <h1>Business Card</h1>
 
        <label class="file-upload">
       <span class="material-icons">upload_file</span> Upload Business Card
@@ -232,14 +154,16 @@ h1 {
     </label>
 
   <div class="buttons">
-            <button id="scanBtn" class="scan-btn" type="button">
-            <span class="material-icons">camera_alt</span> Scan Card
-        </button>
-        
-        <button id="installBtn" class="scan-btn" style="display: none; background: #2196f3;">
-            <span class="material-icons">download</span> Install App
-        </button>
-    </div>
+    <div class="buttons">
+  <button class="camera-btn">
+     <span class="material-icons">photo_camera</span> Use Camera
+  </button>
+  <div style="margin:10px 0; font-weight:bold; color:#888;">OR</div>
+  <label class="gallery-btn">
+     <span class="material-icons">folder_open</span> Select from Gallery
+     <input type="file" id="cardImage" class="file-input" accept="image/*,application/pdf">
+  </label>
+   </div>
     <div id="loader">⏳ Scanning in progress...</div>
      </div>
   <script src="script.js">
