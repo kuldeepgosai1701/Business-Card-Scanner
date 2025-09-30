@@ -37,32 +37,38 @@
   height: 100vh;
 }
 
-/* Scan container (top card) */
+
 .scanner-container {
   width: 100%;
+  height: 60vh;  /* 60% of screen height */
   background: #0e0990;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  padding: 100px;
-   justify-content: center;
-  align-items: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertically center text */
+  align-items: center;      /* horizontally center text */
   text-align: center;
-  height: 60vh;
+
+  padding: 0 20px;  /* small horizontal padding, no top/bottom padding */
 }
 
 
-h2 {
-  font-size: 30px;
-  color: #555;
-  color:white;
-  text-align: center;
-}
-h1 {
-  font-size: 35px;
+.scanner-container h1 {
+    font-size: 35px;
   font-weight: 700;
   color: white;
-  text-align: center;
+  margin: 5px 0;
 }
+
+.scanner-container h2 {
+  font-size: 28px;
+  color: white;
+  margin: 5px 0;
+}
+  
+
 .gallery-container {
   width: 100%;
  height: 40vh;
