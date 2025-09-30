@@ -34,6 +34,7 @@
   align-items: center;
   width: 100%;
   padding: 20px;
+  height: 100vh;
 }
 
 /* Scan container (top card) */
@@ -46,7 +47,7 @@
    justify-content: center;
   align-items: center;
   text-align: center;
-  height: 550vh;
+  height: 60vh;
 }
 
 
@@ -64,12 +65,19 @@ h1 {
 }
 .gallery-container {
   width: 100%;
+ height: 40vh;
   background: #fff;
   border-radius: 15px;
   padding: 100px;
-  height: 35vh;
-            
-}
+
+   display: flex;
+  flex-direction: column;
+  align-items: center;  /* horizontal centering of children */
+  justify-content: flex-start; /* top alignment */
+  padding: 20px;
+  gap: 15px;
+}      
+
 
 /* File upload */
 .file-upload {
@@ -100,14 +108,21 @@ h1 {
   flex-direction: column;
   gap: 15px;
 }
-
 .camera-btn {
   background: #ff7043;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 18px;
+  
+  display: flex;
+  align-items: center;   /* vertically center text/icon inside button */
+  justify-content: center; /* horizontally center text/icon inside button */
+  gap: 8px;
+  
+  margin-top: 0; /* optional, ensures it's at the very top */
 }
 .camera-btn:hover {
   background: #ff6a33;
