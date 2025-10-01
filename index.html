@@ -197,31 +197,60 @@
   <script src="script.js">
   </script>
 <script>
+
 const cameraInput = document.getElementById("cameraInput");
 const galleryInput = document.getElementById("galleryInput");
 const openCameraBtn = document.getElementById("openCamera");
 const loader = document.getElementById("loader");
+let selectedFile = null;
 
-// Camera button click → trigger camera input
+// Camera button click → trigger hidden input
 openCameraBtn.addEventListener("click", () => {
   cameraInput.click();
 });
 
-// Gallery upload click handled automatically by label
-// Listen for file selections
-cameraInput.addEventListener("change", (e) => handleFile(e.target.files[0], "Camera"));
-galleryInput.addEventListener("change", (e) => handleFile(e.target.files[0], "Gallery"));
+// File selected from camera
+cameraInput.addEventListener("change", (e) => {
+  selectedFile = e.target.files[0];
+  if (selectedFile) {
+    console.log("Camera file:", selectedFile.name);
+    alert("Camera image captured: " + selectedFile.name);
+  }
+});
 
-function handleFile(file, source) {
-  if (!file) return;
-  console.log(`${source} selected file:`, file.name);
+// File selected from gallery
+galleryInput.addEventListener("change", (e) => {
+  selectedFile = e.target.files[0];
+  if (selectedFile) {
+    console.log("Gallery file:", selectedFile.name);
+    alert("Gallery image selected: " + selectedFile.name);
+  }
+});
+
+// Scan button → start OCR
+document.getElementById("scanBtn").addEventListener("click", async () => {
+  if (!selectedFile) {
+    alert("Please capture or upload an image first!");
+    return;
+  }
   loader.style.display = "block";
+  const text = await extractText(selectedFile);
+  localStorage.setItem("ocrText", text);
+  loader.style.display = "none";
+  window.location.href = "form.html";
+});
 
-  // simulate scan
-  setTimeout(() => {
-    loader.style.display = "none";
-    alert(`${source} file processed: ${file.name}`);
-  }, 3000);
+// OCR extraction with Tesseract.js
+async function extractText(file) {
+  return new Promise((resolve, reject) => {
+    Tesseract.recognize(
+      file,
+      'eng',
+      { logger: m => console.log(m) }
+    ).then(({ data: { text } }) => {
+      resolve(text);
+    }).catch(err => reject(err));
+  });
 }
 
 // Service worker register
