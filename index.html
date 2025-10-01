@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,68 +19,81 @@
   
   <style>
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden; /* ❌ no scroll */
-  font-family: 'Roboto', sans-serif;
-  background: white;
-}
-.page-container {
-  height: 100vh;              /* full screen */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* top + bottom spacing */
-  align-items: center;
-  padding: 0; /* remove extra padding */
+  body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0d2a54 50%, #ffffff 50%);
+      position: relative;
+    }
+
+    .btn-camera {
+      position: absolute;
+      top: 50%;             /* button ko center line pe le aata hai */
+      left: 50%;
+      transform: translate(-50%, -50%); /* bilkul center align */
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #ff8800;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .btn-camera:hover {
+      background: #e67600;
+    }
+
+.half {
+  height: 50vh; /* each takes half screen */ 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; }
+
+
+.top {
+  background: #0d2a54; /* blue */
+  color: #fff;
 }
 
-.scanner-container {
-   /* take remaining top space */
-  width: 100%;
-  background: #90097c;
-  border-radius: 0 0 15px 15px;  /* only bottom rounded */
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-
+.half.bottom {
+  background: #ffffff;
+  color: #0d2a54;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
+  align-items: center; /* vertical centering */
 }
-
-
-.scanner-container h1 {
-     font-size: clamp(20px, 6vw, 35px);
-     font-weight: 700;
-  color: white;
-  margin: 5px 0;
-}
-
-.scanner-container h2 {
-  font-size: clamp(16px, 4.5vw, 28px);
-  color: white;
-  margin: 5px 0;
-}
-  
-
-.gallery-container {
-  flex: 1;
-  max-height: 35%;
-  background: #fff;
-  border-radius: 15px;
-  padding: 20px;
-
-   display: flex;
+.center-content {
+  display: flex;
   flex-direction: column;
-  align-items: center;  /* horizontal centering of children */
-  justify-content: flex-start; /* top alignment */
-  padding: 20px;
-  gap: 15px;
-}      
+  align-items: center; /* horizontal centering */
+  justify-content: center; /* vertical centering inside bottom half */
+  gap: 20px; /* spacing between button, "or", and label */
+}
+
+.or-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+}
+
+/* Container */
+.scanner-container {
+  width: 95%;
+  max-width: 700px;   /* mobile pe bada dikhega */
+  padding: 10px 10px;
+  min-height: 50vh;
+  border-radius: 15px;
+  background: #fffffff5;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+/* Heading */
 
 
 /* File upload */
@@ -109,55 +123,8 @@ html, body {
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
-
-.camera-btn {
-  background: #ff7043;
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: clamp(14px, 5vw, 18px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.camera-btn:hover { background: #ff6a33; }
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-}
-.divider::before, .divider::after {
-  content: "";
-  flex: 1;
-  border-top: 1px solid #ddd;
-}
-.divider span {
-  margin: 0 10px;
-  color: #888;
-  font-weight: bold;
-}
-.gallery-btn {
-  border: 2px dashed #bbb;
-  padding: 12px 20px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: clamp(14px, 5vw, 20px);
-  font-weight: 600;
-  color: #555;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.gallery-btn:hover { background: #f8f8f8; }
-
-
 .buttons button {
   padding: 16px;
   font-size: 7vw;
@@ -170,20 +137,28 @@ html, body {
   justify-content: center;
   gap: 8px;
 }
+.scan-btn {
+  background: #4caf50;
+  color: #fff;
+}
+.scan-btn:hover {
+  background: #43a047;
+}
+#installBtn {
+  background: #2196f3;
+  color: #fff;
+}
+#installBtn:hover {
+  background: #1e88e5;
+}
 
-
+/* Loader */
 #loader {
   display: none;
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 15px;
+  font-size: 15px;
   color: #444;
   font-weight: bold;
-}
-@media (min-width: 600px) {
-  .buttons {
-    flex-direction: row;
-    justify-content: center;
-  }
 }
 
 
@@ -191,37 +166,32 @@ html, body {
 </head>
 
 <body>
-  <div class="page-container">
+  <div class="half top">
+     <h1 style="color:white;">📇 Business Card Scanner</h1>
+     </div>
 
-  <div class="scanner-container">
-    <h2>You need to Upload your</h2>
-    <h1>Business Card</h1>
-  </div>
+<div class="half bottom">
 
+<div class="center-content">
+ <button class="btn-camera">📷 Use Camera</button>
 
+    <div class="or-text">or</div>
 
-  <!-- Camera Button -->
-  <button class="camera-btn">
-    <span class="material-icons"></span> Use Camera
-  </button>
-
-  <!-- Divider -->
-  <div class="divider"><span>OR</span></div>
-
-
-  <!-- Gallery Upload -->
-  <label class="gallery-btn">
-    <span class="material-icons">folder_open</span> Select from Gallery
-    <input type="file" id="cardImage" class="file-input" accept="image/*,application/pdf">
-  </label>
-      
+     
+     
+       <label class="file-upload">
+      <span class="material-icons">upload_file</span> Upload Business Card
+    <input type="file" id="cardImage" class="file-input" accept="image/*">
+    </label>
+  
+  <div class="buttons">
+            <button id="scanBtn" class="scan-btn" type="button">
+            <span class="material-icons">scan</span> card
+        </button> 
+    </div>
     <div id="loader">⏳ Scanning in progress...</div>
-    
-
-
-
-
-
+    </div>
+     </div>
 
   <script src="script.js">
   </script>
