@@ -174,14 +174,15 @@
 
 <div class="center-content">
  <button class="btn-camera">📷 Use Camera</button>
+ <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
 
     <div class="or-text">or</div>
 
      
      
        <label class="file-upload">
-      <span class="material-icons">upload_file</span> Upload Business Card
-    <input type="file" id="cardImage" class="file-input" accept="image/*">
+      <span class="material-icons">upload_file</span> Upload form Gaallery
+       <input type="file" id="galleryInput" class="file-input" accept="image/*">
     </label>
   
   <div class="buttons">
@@ -196,17 +197,34 @@
   <script src="script.js">
   </script>
 <script>
-  // Get the file input element
-    const cardImageInput = document.getElementById('cardImage');
-    const loader = document.getElementById('loader');
-    function simulateScan(file) {
-        console.log('Simulating scan for file:', file.name);
-        setTimeout(() => {
-            console.log('Scan simulated! File successfully uploaded and processed.');
-            loader.style.display = 'none';
-            alert('Card scanned and processed! Check the console for the "file selected" message.');
-        }, 3000); // Wait 3 seconds to simulate the OCR process
-    }
+const cameraInput = document.getElementById("cameraInput");
+const galleryInput = document.getElementById("galleryInput");
+const openCameraBtn = document.getElementById("openCamera");
+const loader = document.getElementById("loader");
+
+// Camera button click → trigger camera input
+openCameraBtn.addEventListener("click", () => {
+  cameraInput.click();
+});
+
+// Gallery upload click handled automatically by label
+// Listen for file selections
+cameraInput.addEventListener("change", (e) => handleFile(e.target.files[0], "Camera"));
+galleryInput.addEventListener("change", (e) => handleFile(e.target.files[0], "Gallery"));
+
+function handleFile(file, source) {
+  if (!file) return;
+  console.log(`${source} selected file:`, file.name);
+  loader.style.display = "block";
+
+  // simulate scan
+  setTimeout(() => {
+    loader.style.display = "none";
+    alert(`${source} file processed: ${file.name}`);
+  }, 3000);
+}
+
+// Service worker register
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
