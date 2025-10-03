@@ -16,55 +16,72 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   if (!file) {
     alert("Please upload or capture an image!");
     return;
-  }*/
-
-const openCameraBtn = document.getElementById("openCamera");
-
-// Camera button click → trigger hidden input
-openCameraBtn.addEventListener("click", () => {
- cameraInput.value = null; // Clear previous selection
- cameraInput.click();
-});
-
- let selectedFile = null;
-
-// Camera input
-const cameraInput = document.getElementById("cameraInput");
-cameraInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    selectedFile = file; // ← important!
-    console.log("Camera file:", file.name);
-    //alert("Camera image captured: " + file.name);
-    startScanProcess(file);
   }
-});
 
-// Gallery input
-const galleryInput = document.getElementById("galleryInput");
-galleryInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    selectedFile = file; // ← important!
-    console.log("Gallery file:", file.name);
-    //alert("Gallery image selected: " + file.name);
-    startScanProcess(file);
-    }
-});
-
-// Scan button
-/*document.getElementById("scanBtn").addEventListener("click", async () => {
-  if (!selectedFile) {
-    alert("Please capture or upload an image first!");
-    return;
-  }
   const loader = document.getElementById("loader");
   loader.style.display = "block";
-  const text = await extractText(selectedFile);
+
+  const text = await extractText(file);
   localStorage.setItem("ocrText", text);
   loader.style.display = "none";
   window.location.href = "form.html";
 });*/
+
+const scanBtn = document.getElementById("scanBtn");
+
+// --- Image Selection Handlers ---
+
+// Function to handle a file selection
+function handleFileSelection(e) {
+    const file = e.target.files[0];
+    if (file) {
+        selectedFile = file;
+        console.log("File selected:", file.name);
+        // Show the scan button once a file is selected
+        if (scanBtn) {
+            // Use 'block' or 'flex' depending on your CSS, I'll use block for simplicity 
+            scanBtn.style.display = 'block'; 
+        }
+    } else {
+        selectedFile = null;
+        if (scanBtn) {
+            scanBtn.style.display = 'none';
+        }
+    }
+}
+
+// Camera button click → trigger hidden input
+document.getElementById("openCamera")?.addEventListener("click", () => {
+    document.getElementById("cameraInput").value = null; // Clear previous selection
+    document.getElementById("cameraInput").click();
+});
+
+// File selected from camera
+document.getElementById("cameraInput")?.addEventListener("change", handleFileSelection);
+
+// File selected from gallery
+document.getElementById("galleryInput")?.addEventListener("change", handleFileSelection);
+
+
+// --- Scan Button Logic ---
+
+// Scan button → start OCR
+document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+        alert("Please capture or upload an image first!");
+        return;
+    }
+    
+    loader.style.display = "block";
+    scanBtn.style.display = 'none'; // Hide button during scan
+
+    const text = await extractText(selectedFile);
+    
+    localStorage.setItem("ocrText", text);
+    loader.style.display = "none";
+    window.location.href = "form.html";
+});
 
 async function extractText(file) {
   return new Promise((resolve, reject) => {
@@ -77,18 +94,8 @@ async function extractText(file) {
     }).catch(err => reject(err));
   });
 }
-async function startScanProcess(fileToScan) {
-    const loader = document.getElementById("loader");
-    loader.style.display = "block";
-    
-    const text = await extractText(fileToScan);
-    localStorage.setItem("ocrText", text);
-    
-    loader.style.display = "none";
-    window.location.href = "form.html";
-}
 
-  window.addEventListener("load", () => {
+ window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
 
   const ocrText = localStorage.getItem("ocrText");
@@ -190,52 +197,41 @@ if (!contactLine) {
   document.getElementById("address").value = address;
 });
 
+// ================= Form Submit with Confirmation =================
+document.getElementById("cardForm")?.addEventListener("submit", function (e) {
+  e.preventDefault(); // page reload na ho
 
-// ===================== Page Load Install Popup =====================
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        if (confirm("Do you want to install the app?")) {
-            if (window.deferredPrompt) {
-                window.deferredPrompt.prompt();
-                window.deferredPrompt.userChoice.then((choiceResult) => {
-                    console.log("User choice:", choiceResult.outcome);
-                    window.deferredPrompt = null;
-                });
-            } else {
-                alert("App install not supported or already installed.");
-            }
-        }
-    }, 500);
-});
+  // popup confirm box
+  let userConfirm = confirm("Do you want to download the extracted details?");
+  
+  if (userConfirm) {
+    // form se values lo
+    let businessName = document.getElementById("businessName").value;
+    let contactPerson = document.getElementById("contactPerson").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+    let address = document.getElementById("address").value.replace(/\n/g, " ");
 
-// Listen for PWA install prompt
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    window.deferredPrompt = e; 
-});
+    // CSV headers + values
+    let headers = ["Business Name", "Contact Person", "Phone Number", "Email", "Address"];
+    let values = [businessName, contactPerson, phone, email, address];
 
-// ===================== Form Submit Download Popup =====================
-const form = document.getElementById("supportForm");
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
+    // CSV string banao
+    let csvContent = headers.join(",") + "\n" + values.map(v => `"${v}"`).join(",");
 
-    if (confirm("Do you want to download the extracted information?")) {
-        const businessName = document.getElementById("businessName").value;
-        const contactPerson = document.getElementById("contactPerson").value;
-        const phone = document.getElementById("phone").value;
-        const email = document.getElementById("email").value;
-        const address = document.getElementById("address").value;
+    // Blob create karo
+    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
 
-        const content = `Business Name: ${businessName}\nContact Person: ${contactPerson}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}`;
+    // Download link create karo
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "business-card.csv"; // file name
+    link.click();
 
-        const blob = new Blob([content], { type: "text/plain" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "business_card_info.txt";
-        link.click();
-        URL.revokeObjectURL(link.href);
-    } else {
-        alert("Download cancelled!");
-    }
+    // memory cleanup
+    URL.revokeObjectURL(link.href);
+  } else {
+    alert("Download cancelled!");
+  }
 });
 
