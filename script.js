@@ -88,7 +88,7 @@ async function startScanProcess(fileToScan) {
     window.location.href = "form.html";
 }
 
- /*window.addEventListener("load", () => {
+  window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
 
   const ocrText = localStorage.getItem("ocrText");
@@ -248,66 +248,54 @@ window.addEventListener('beforeinstallprompt', (e) => {
     console.log('User choice:', outcome);
     deferredPrompt = null;
   });
-});*/
+});
 
+
+// ===================== Page Load Install Popup =====================
 document.addEventListener("DOMContentLoaded", () => {
-    const ocrText = localStorage.getItem("ocrText");
-    if (!ocrText) return;
-
-    const businessInput = document.getElementById("businessName");
-    if (!businessInput) return; // prevent errors if element missing
-
-    let lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
-    console.log("Extracted Lines:", lines);
-
-    // Emails
-    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi) || [];
-    const email = emailMatches.join(", ");
-
-    // Phones
-    let phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g) || [];
-    phoneMatches = phoneMatches.filter(num => {
-        const cleanNum = num.replace(/\D/g, "");
-        if (/^\d{6}$/.test(cleanNum)) return false;
-        return true;
-    });
-    const phone = phoneMatches.join(", ");
-
-    // Remove phone/email lines
-    lines = lines.filter(line =>
-        !emailMatches.some(e => line.includes(e)) &&
-        !phoneMatches.some(p => line.includes(p))
-    );
-
-    // Business name
-    let businessLine = lines.find(l =>
-        /(University|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Advertising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
-    ) || lines.reduce((longest, line) => line.length > (longest?.length || 0) ? line : longest, "");
-
-    // Contact person
-    let contactLine = lines.find(l =>
-        /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head|MD|Chairman|Owner)/i.test(l)
-    ) || "";
-
-    // Address
-    let addressMatches = [];
-    lines.forEach(line => {
-        if (/(garden|Quarter|Complex|road|street|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
-            addressMatches.push(line);
-        } else if (/\b\d{6}\b/.test(line)) {
-            addressMatches.push(line);
+    setTimeout(() => {
+        if (confirm("Do you want to install the app?")) {
+            if (window.deferredPrompt) {
+                window.deferredPrompt.prompt();
+                window.deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log("User choice:", choiceResult.outcome);
+                    window.deferredPrompt = null;
+                });
+            } else {
+                alert("App install not supported or already installed.");
+            }
         }
-    });
-    const address = addressMatches.join(", ");
+    }, 500);
+});
 
-    // Fill inputs
-    businessInput.value = businessLine;
-    document.getElementById("contactPerson").value = contactLine;
-    document.getElementById("phone").value = phone;
-    document.getElementById("email").value = email;
-    document.getElementById("address").value = address;
+// Listen for PWA install prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.deferredPrompt = e; 
+});
 
-    // Optional: clear localStorage after filling
-    localStorage.removeItem("ocrText");
+// ===================== Form Submit Download Popup =====================
+const form = document.getElementById("supportForm");
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    if (confirm("Do you want to download the extracted information?")) {
+        const businessName = document.getElementById("businessName").value;
+        const contactPerson = document.getElementById("contactPerson").value;
+        const phone = document.getElementById("phone").value;
+        const email = document.getElementById("email").value;
+        const address = document.getElementById("address").value;
+
+        const content = `Business Name: ${businessName}\nContact Person: ${contactPerson}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}`;
+
+        const blob = new Blob([content], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "business_card_info.txt";
+        link.click();
+        URL.revokeObjectURL(link.href);
+    } else {
+        alert("Download cancelled!");
+    }
 });
 
