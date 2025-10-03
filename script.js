@@ -190,66 +190,6 @@ if (!contactLine) {
   document.getElementById("address").value = address;
 });
 
-// ================= Form Submit with Confirmation =================
-document.getElementById("cardForm")?.addEventListener("submit", function (e) {
-  e.preventDefault(); // page reload na ho
-
-  // popup confirm box
-  let userConfirm = confirm("Do you want to download the extracted details?");
-  
-  if (userConfirm) {
-    // form se values lo
-    let businessName = document.getElementById("businessName").value;
-    let contactPerson = document.getElementById("contactPerson").value;
-    let phone = document.getElementById("phone").value;
-    let email = document.getElementById("email").value;
-    let address = document.getElementById("address").value.replace(/\n/g, " ");
-
-    // CSV headers + values
-    let headers = ["Business Name", "Contact Person", "Phone Number", "Email", "Address"];
-    let values = [businessName, contactPerson, phone, email, address];
-
-    // CSV string banao
-    let csvContent = headers.join(",") + "\n" + values.map(v => `"${v}"`).join(",");
-
-    // Blob create karo
-    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-    // Download link create karo
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "business-card.csv"; // file name
-    link.click();
-
-    // memory cleanup
-    URL.revokeObjectURL(link.href);
-  } else {
-    alert("Download cancelled!");
-  }
-});
-
-// ================= PWA Install Prompt =================
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn'); // Get the new button
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); // Prevent automatic prompt
-  deferredPrompt = e;
-  
-  // Show the custom install button when the prompt is available
-  if (installBtn) {
-    installBtn.style.display = 'flex'; 
-  }
-
-  installBtn?.addEventListener('click', async () => {
-    installBtn.style.display = 'none'; // Hide button once clicked
-    deferredPrompt.prompt(); // Show the native install prompt
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('User choice:', outcome);
-    deferredPrompt = null;
-  });
-});
-
 
 // ===================== Page Load Install Popup =====================
 document.addEventListener("DOMContentLoaded", () => {
