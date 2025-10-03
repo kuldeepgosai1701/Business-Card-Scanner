@@ -17,6 +17,15 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
     alert("Please upload or capture an image!");
     return;
   }*/
+
+const openCameraBtn = document.getElementById("openCamera");
+
+// Camera button click → trigger hidden input
+openCameraBtn.addEventListener("click", () => {
+ cameraInput.value = null; // Clear previous selection
+ cameraInput.click();
+});
+
  let selectedFile = null;
 
 // Camera input
