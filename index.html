@@ -206,6 +206,7 @@ let selectedFile = null;
 
 // Camera button click → trigger hidden input
 openCameraBtn.addEventListener("click", () => {
+  cameraInput.value = null;
   cameraInput.click();
 });
 
