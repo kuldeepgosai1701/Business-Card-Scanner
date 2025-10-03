@@ -5,8 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Extracted Details</title>
   <style>
-    body {
-   min-height: 100vh;
+   
+   html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+   height: 100%;
   font-family: "Roboto", sans-serif;
   background: #f5f5f5;
   margin: 0;
@@ -18,7 +25,8 @@
 
   .form-container {
   width: 100%;
-  max-width: 500px; /* optional, keeps nice size on desktop */
+  height: 100vh; 
+  min-height: 100vh; /* optional, keeps nice size on desktop */
   background: white;
   border-radius: 0px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -37,7 +45,8 @@
 
   .form-body {
      flex: 1;
-     padding: 20px;
+     height: 100%;
+    padding: 20px;
      overflow-y: auto; 
   }
 
@@ -87,6 +96,7 @@
     justify-content: space-between;
     padding: 15px 20px;
     background: #fafafa;
+     bottom: 0;  
   }
 
   .form-footer button {
