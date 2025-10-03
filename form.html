@@ -25,7 +25,7 @@ body {
   
 .form-container {
   width: 100%;
-  min-height: 100dvh; /* fixes blank space issue */
+  height: 100vh; /* fixes blank space issue */
   background: white;
   display: flex;
   flex-direction: column;
@@ -41,13 +41,12 @@ body {
 
   .form-body {
      flex: 1;
-     height: 100%;
     padding: 20px;
      overflow-y: auto; 
   }
 
   .form-group {
-    margin-bottom: 0%;
+    margin-bottom: 60px;
     position: relative;
   }
 
@@ -88,7 +87,8 @@ body {
   }
 
   .form-footer {
-     margin-top: auto;  /* pushes footer to bottom */
+     flex-shrink: 0;  
+     /* pushes footer to bottom */
   display: flex;
   justify-content: space-between;
   padding: 15px 20px;
@@ -160,11 +160,13 @@ body {
       <label>Address:</label>
       <textarea id="address" placeholder="Enter address"></textarea>
       </div>
-     </form>
+     
 
       <div class="form-footer">
         <button type="submit" class="submit-btn">SUBMIT</button>
       </div>
+</form>
+
 
     </div>
    </div>
