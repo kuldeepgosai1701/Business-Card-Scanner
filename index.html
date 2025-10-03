@@ -212,10 +212,10 @@ openCameraBtn.addEventListener("click", () => {
 
 // File selected from camera
 cameraInput.addEventListener("change", (e) => {
-  //selectedFile = e.target.files[0];
+   //selectedFile = e.target.files[0];
   const file = e.target.files[0];
   if (file) {
-    //selectedFile = file;
+    selectedFile = file;
     console.log("Camera file:",file.name);
     alert("Camera image captured: " + file.name);
   }
@@ -226,7 +226,7 @@ galleryInput.addEventListener("change", (e) => {
   //selectedFile = e.target.files[0];
    const file = e.target.files[0];
   if (file) {
-     //selectedFile = file;
+     selectedFile = file;
     console.log("Gallery file:", file.name);
     alert("Gallery image selected: " + file.name);
   }
