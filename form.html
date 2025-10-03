@@ -14,9 +14,10 @@
   }
 
   .form-container {
-    height: 100vh;
-      justify-content: center; 
-  padding: 10px; 
+    height: 100%;
+     width: 100%
+    justify-content: center; 
+    padding: 10px; 
     margin: 40px auto;
     background: white;
     border-radius: 10px;
@@ -109,6 +110,20 @@
   .submit-btn:hover {
     background: linear-gradient(45deg, #ff5500, #ff8800);
   }
+
+   @media (max-width: 600px) {
+      .form-header {
+        font-size: 1rem;
+        padding: 12px;
+      }
+      .form-body {
+        padding: 10px;
+      }
+      .form-footer button {
+        font-size: 0.9rem;
+        padding: 10px;
+      }}
+      
   </style>
 
 </head>
