@@ -1,4 +1,4 @@
-document.getElementById("cardImage")?.addEventListener("change", (e) => {
+/*document.getElementById("cardImage")?.addEventListener("change", (e) => {
   
    e.preventDefault()
    const file = e.target.files[0];
@@ -16,12 +16,40 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   if (!file) {
     alert("Please upload or capture an image!");
     return;
-  }
+  }*/
+ let selectedFile = null;
 
+// Camera input
+const cameraInput = document.getElementById("cameraInput");
+cameraInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    selectedFile = file; // ← important!
+    console.log("Camera file:", file.name);
+    alert("Camera image captured: " + file.name);
+  }
+});
+
+// Gallery input
+const galleryInput = document.getElementById("galleryInput");
+galleryInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    selectedFile = file; // ← important!
+    console.log("Gallery file:", file.name);
+    alert("Gallery image selected: " + file.name);
+  }
+});
+
+// Scan button
+document.getElementById("scanBtn").addEventListener("click", async () => {
+  if (!selectedFile) {
+    alert("Please capture or upload an image first!");
+    return;
+  }
   const loader = document.getElementById("loader");
   loader.style.display = "block";
-
-  const text = await extractText(file);
+  const text = await extractText(selectedFile);
   localStorage.setItem("ocrText", text);
   loader.style.display = "none";
   window.location.href = "form.html";
