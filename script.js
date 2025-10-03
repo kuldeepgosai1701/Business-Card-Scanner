@@ -87,7 +87,8 @@ async function startScanProcess(fileToScan) {
     loader.style.display = "none";
     window.location.href = "form.html";
 }
- window.addEventListener("load", () => {
+
+ /*window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
 
   const ocrText = localStorage.getItem("ocrText");
@@ -247,4 +248,66 @@ window.addEventListener('beforeinstallprompt', (e) => {
     console.log('User choice:', outcome);
     deferredPrompt = null;
   });
+});*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    const ocrText = localStorage.getItem("ocrText");
+    if (!ocrText) return;
+
+    const businessInput = document.getElementById("businessName");
+    if (!businessInput) return; // prevent errors if element missing
+
+    let lines = ocrText.split("\n").map(l => l.trim()).filter(l => []);
+    console.log("Extracted Lines:", lines);
+
+    // Emails
+    const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi) || [];
+    const email = emailMatches.join(", ");
+
+    // Phones
+    let phoneMatches = ocrText.match(/\+?\d[\d\s-]{7,}\d/g) || [];
+    phoneMatches = phoneMatches.filter(num => {
+        const cleanNum = num.replace(/\D/g, "");
+        if (/^\d{6}$/.test(cleanNum)) return false;
+        return true;
+    });
+    const phone = phoneMatches.join(", ");
+
+    // Remove phone/email lines
+    lines = lines.filter(line =>
+        !emailMatches.some(e => line.includes(e)) &&
+        !phoneMatches.some(p => line.includes(p))
+    );
+
+    // Business name
+    let businessLine = lines.find(l =>
+        /(University|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Advertising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
+    ) || lines.reduce((longest, line) => line.length > (longest?.length || 0) ? line : longest, "");
+
+    // Contact person
+    let contactLine = lines.find(l =>
+        /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head|MD|Chairman|Owner)/i.test(l)
+    ) || "";
+
+    // Address
+    let addressMatches = [];
+    lines.forEach(line => {
+        if (/(garden|Quarter|Complex|road|street|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
+            addressMatches.push(line);
+        } else if (/\b\d{6}\b/.test(line)) {
+            addressMatches.push(line);
+        }
+    });
+    const address = addressMatches.join(", ");
+
+    // Fill inputs
+    businessInput.value = businessLine;
+    document.getElementById("contactPerson").value = contactLine;
+    document.getElementById("phone").value = phone;
+    document.getElementById("email").value = email;
+    document.getElementById("address").value = address;
+
+    // Optional: clear localStorage after filling
+    localStorage.removeItem("ocrText");
 });
+
