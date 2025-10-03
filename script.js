@@ -53,7 +53,7 @@ galleryInput.addEventListener("change", (e) => {
 });
 
 // Scan button
-document.getElementById("scanBtn").addEventListener("click", async () => {
+/*document.getElementById("scanBtn").addEventListener("click", async () => {
   if (!selectedFile) {
     alert("Please capture or upload an image first!");
     return;
@@ -64,7 +64,7 @@ document.getElementById("scanBtn").addEventListener("click", async () => {
   localStorage.setItem("ocrText", text);
   loader.style.display = "none";
   window.location.href = "form.html";
-});
+});*/
 
 async function extractText(file) {
   return new Promise((resolve, reject) => {
