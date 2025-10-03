@@ -211,19 +211,21 @@ openCameraBtn.addEventListener("click", () => {
 
 // File selected from camera
 cameraInput.addEventListener("change", (e) => {
-  selectedFile = e.target.files[0];
-  if (selectedFile) {
-    console.log("Camera file:", selectedFile.name);
-    alert("Camera image captured: " + selectedFile.name);
+  //selectedFile = e.target.files[0];
+  const file = e.target.files[0];
+  if (file) {
+    console.log("Camera file:",file.name);
+    alert("Camera image captured: " + file.name);
   }
 });
 
 // File selected from gallery
 galleryInput.addEventListener("change", (e) => {
-  selectedFile = e.target.files[0];
-  if (selectedFile) {
-    console.log("Gallery file:", selectedFile.name);
-    alert("Gallery image selected: " + selectedFile.name);
+  //selectedFile = e.target.files[0];
+   const file = e.target.files[0];
+  if (file) {
+    console.log("Gallery file:", file.name);
+    alert("Gallery image selected: " + file.name);
   }
 });
 
