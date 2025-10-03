@@ -35,7 +35,8 @@ cameraInput.addEventListener("change", (e) => {
   if (file) {
     selectedFile = file; // ← important!
     console.log("Camera file:", file.name);
-    alert("Camera image captured: " + file.name);
+    //alert("Camera image captured: " + file.name);
+    startScanProcess(file);
   }
 });
 
@@ -46,8 +47,9 @@ galleryInput.addEventListener("change", (e) => {
   if (file) {
     selectedFile = file; // ← important!
     console.log("Gallery file:", file.name);
-    alert("Gallery image selected: " + file.name);
-  }
+    //alert("Gallery image selected: " + file.name);
+    startScanProcess(file);
+    }
 });
 
 // Scan button
@@ -75,7 +77,16 @@ async function extractText(file) {
     }).catch(err => reject(err));
   });
 }
-
+async function startScanProcess(fileToScan) {
+    const loader = document.getElementById("loader");
+    loader.style.display = "block";
+    
+    const text = await extractText(fileToScan);
+    localStorage.setItem("ocrText", text);
+    
+    loader.style.display = "none";
+    window.location.href = "form.html";
+}
  window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
 
