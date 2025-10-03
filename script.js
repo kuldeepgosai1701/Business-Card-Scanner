@@ -198,7 +198,7 @@ if (!contactLine) {
 });
 
 // ================= Form Submit with Confirmation =================
-document.getElementById("cardForm")?.addEventListener("submit", function (e) {
+/*document.getElementById("cardForm")?.addEventListener("submit", function (e) {
   e.preventDefault(); // page reload na ho
 
   // popup confirm box
@@ -233,5 +233,61 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
   } else {
     alert("Download cancelled!");
   }
+});*/
+
+// ================= Form Submit with Confirmation (Custom Modal) =================
+
+// Modal elements ko select karein
+const customConfirmModal = document.getElementById("customConfirmModal");
+const okDownloadBtn = document.getElementById("okDownloadBtn");
+const cancelDownloadBtn = document.getElementById("cancelDownloadBtn");
+
+// Download logic ko ek function mein wrap karein
+function startDownload() {
+    // form se values lo
+    let businessName = document.getElementById("businessName").value;
+    let contactPerson = document.getElementById("contactPerson").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+    let address = document.getElementById("address").value.replace(/\n/g, " ");
+
+    // CSV headers + values
+    let headers = ["Business Name", "Contact Person", "Phone Number", "Email", "Address"];
+    let values = [businessName, contactPerson, phone, email, address];
+
+    // CSV string banao
+    let csvContent = headers.join(",") + "\n" + values.map(v => `"${v}"`).join(",");
+
+    // Blob create karo
+    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    // Download link create karo
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "business-card.csv"; // file name
+    link.click();
+
+    // memory cleanup
+    URL.revokeObjectURL(link.href);
+}
+
+
+document.getElementById("cardForm")?.addEventListener("submit", function (e) {
+    e.preventDefault(); // page reload na ho
+
+    // Custom Modal ko dikhao
+    customConfirmModal.style.display = "flex";
+});
+
+// OK button click handler
+okDownloadBtn.addEventListener("click", () => {
+    customConfirmModal.style.display = "none"; // Modal hide karo
+    startDownload(); // Download shuru karo
+});
+
+// Cancel button click handler
+cancelDownloadBtn.addEventListener("click", () => {
+    customConfirmModal.style.display = "none"; // Modal hide karo
+    alert("Download cancelled!");
 });
 

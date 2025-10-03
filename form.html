@@ -128,6 +128,51 @@ body {
     padding: 10px;
   }
 }
+
+/* Custom Modal CSS */
+.modal-overlay {
+    display: none; /* By default hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 80%; /* Mobile friendly width */
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    /* .submit-btn और .reset-btn classes use ho jayengi */
+}
+
   </style>
 
 </head>
@@ -171,7 +216,18 @@ body {
     </div>
    </div>
   
-   <script src="script.js"></script>
+   <script src="script.js">
+
+    <div id="customConfirmModal" class="modal-overlay">
+    <div class="modal-content">
+        <p>Do you want to download the extracted details?</p>
+        <div class="modal-buttons">
+            <button id="cancelDownloadBtn" class="reset-btn">Cancel</button>
+            <button id="okDownloadBtn" class="submit-btn">OK</button>
+        </div>
+    </div>
+</div>
+   </script>
 </body>
 </html>
 
