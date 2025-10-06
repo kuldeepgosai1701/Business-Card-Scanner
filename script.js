@@ -1,35 +1,5 @@
-/*document.getElementById("cardImage")?.addEventListener("change", (e) => {
-  
-   e.preventDefault()
-   const file = e.target.files[0];
-     if (!file) {
-     console.log("File selection cancelled.");
-     return;
-    }
-    console.log("Image selected:", file);
-});
-   
-  // Use the existing logic triggered by the scan button
-document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
-  e.preventDefault()
-  const file = document.getElementById("cardImage").files[0];
-  if (!file) {
-    alert("Please upload or capture an image!");
-    return;
-  }
-
-  const loader = document.getElementById("loader");
-  loader.style.display = "block";
-
-  const text = await extractText(file);
-  localStorage.setItem("ocrText", text);
-  loader.style.display = "none";
-  window.location.href = "form.html";
-});*/
 
 const scanBtn = document.getElementById("scanBtn");
-
-// --- Image Selection Handlers ---
 
 // Function to handle a file selection
 function handleFileSelection(e) {
@@ -196,44 +166,6 @@ if (!contactLine) {
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
 });
-
-// ================= Form Submit with Confirmation =================
-/*document.getElementById("cardForm")?.addEventListener("submit", function (e) {
-  e.preventDefault(); // page reload na ho
-
-  // popup confirm box
-  let userConfirm = confirm("Do you want to download the extracted details?");
-  
-  if (userConfirm) {
-    // form se values lo
-    let businessName = document.getElementById("businessName").value;
-    let contactPerson = document.getElementById("contactPerson").value;
-    let phone = document.getElementById("phone").value;
-    let email = document.getElementById("email").value;
-    let address = document.getElementById("address").value.replace(/\n/g, " ");
-
-    // CSV headers + values
-    let headers = ["Business Name", "Contact Person", "Phone Number", "Email", "Address"];
-    let values = [businessName, contactPerson, phone, email, address];
-
-    // CSV string banao
-    let csvContent = headers.join(",") + "\n" + values.map(v => `"${v}"`).join(",");
-
-    // Blob create karo
-    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-    // Download link create karo
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "business-card.csv"; // file name
-    link.click();
-
-    // memory cleanup
-    URL.revokeObjectURL(link.href);
-  } else {
-    alert("Download cancelled!");
-  }
-});*/
 
 // ================= Form Submit with Confirmation (Custom Modal) =================
 
