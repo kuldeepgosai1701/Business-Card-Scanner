@@ -26,13 +26,15 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   loader.style.display = "none";
   window.location.href = "form.html";
 });*/
-
+let selectedFile = null;
+const loader = document.getElementById("loader");
 const scanBtn = document.getElementById("scanBtn");
 
 // --- Image Selection Handlers ---
 
 // Function to handle a file selection
 function handleFileSelection(e) {
+   e.preventDefault();
     const file = e.target.files[0];
     if (file) {
         selectedFile = file;
@@ -52,6 +54,7 @@ function handleFileSelection(e) {
 
 // Camera button click → trigger hidden input
 document.getElementById("openCamera")?.addEventListener("click", () => {
+    e.preventDefault();
     document.getElementById("cameraInput").value = null; // Clear previous selection
     document.getElementById("cameraInput").click();
 });
