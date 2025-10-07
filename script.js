@@ -110,6 +110,14 @@ async function extractText(file) {
   let lines = ocrText.split("\n").map(l => l.trim()).filter(l => l);
   console.log("Extracted Lines:", lines);
 
+   lines = lines.filter(line => !/(www\.|\.com|\.in|@)/i.test(line));
+   
+  // Remove address-like lines to avoid picking them as business name
+  let nonAddressLines = lines.filter(line => 
+      !/(garden|road|street|lane|nagar|sector|circle|city|state|india|\b\d{6}\b)/i.test(line) &&
+      !/(www\.|\.com|\.in|@)/i.test(line)  // also remove website/email lines
+  );
+
   // 📧 Emails
   const emailMatches = ocrText.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi) || [];
   const email = emailMatches.join(", ");
@@ -131,18 +139,29 @@ async function extractText(file) {
 
   // 🏠 Address
   let addressMatches = [];
-  lines.forEach(line => {
-    if (/(garden|Quarter|Complex|road|street|Corner point|Opposite site|Park|Chowk|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
-      addressMatches.push(line);
-    } else if (/\b\d{6}\b/.test(line)) { // pincode
-      addressMatches.push(line);
+   for (let i = 0; i < lines.length; i++) {
+  if (/(garden|Quarter|Complex|road|street|corner|park|lane|nagar|sector|circle|city|state|india)/i.test(lines[i]) || /\b\d{6}\b/.test(lines[i])) {
+    let addr = lines[i];
+
+    // Check next 1-2 lines if they look like address continuation
+    if (i + 1 < lines.length && !/(www|@)/i.test(lines[i+1])) {
+      addr += ", " + lines[i+1];
+      i++; // skip next line as it is already added
     }
-  });
-  const address = addressMatches.join(", ");
+    if (i + 1 < lines.length && !/(www|@)/i.test(lines[i+1]) && !/\b\d{10}\b/.test(lines[i+1])) {
+      addr += ", " + lines[i+1];
+      i++; // optional third line
+    }
+
+    addressMatches.push(addr);
+  }
+}
+const address = addressMatches.join(", ");
+
 
  // 🏢 Business Name(case 4)
-let businessIndex = lines.findIndex(l =>
-  /(University|Mall|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Plastic|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
+/*let businessIndex = lines.findIndex(l =>
+  /(University|Mall|School|Project|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Plastic|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Explores|Systems|Group|Education|Jewelers|Industries)/i.test(l)
 );
 
 let businessLine = "";
@@ -175,10 +194,41 @@ if (businessIndex !== -1) {
     }
     return longest;
   }, "");
+}*/
+// 🏢 Business Name using nonAddressLines
+let businessIndex = nonAddressLines.findIndex(l =>
+  /(University|Mall|School|Project|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Plastic|Advertising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Explores|Systems|Group|Education|Jewelers|Industries)/i.test(l)
+);
+
+let businessLine = "";
+if (businessIndex !== -1) {
+  businessLine = nonAddressLines[businessIndex];
+
+  // Check previous line for multi-line names
+  if (businessIndex > 0) {
+    let prevLine = nonAddressLines[businessIndex - 1];
+    if (prevLine && prevLine.length > 2 && !/(garden|road|street|lane|nagar|sector|city|state|india|\d{6}|@|\d{10})/i.test(prevLine)) {
+      businessLine = prevLine + " " + businessLine;
+    }
+  }
+
+  // Check next line for single-word business names
+  let nextLine = nonAddressLines[businessIndex + 1];
+  if (nextLine && nextLine.length > 2 && /University|Ltd|Inc|Pvt|Trust|College/i.test(nextLine)) {
+    businessLine += " " + nextLine;
+  }
+} else {
+  // fallback → pick longest line in nonAddressLines
+  businessLine = nonAddressLines.reduce((longest, line) =>
+    line.length > (longest?.length || 0) ? line : longest
+  , "");
 }
+
+
+
 // 👤 Contact (case 3)
 let contactLine = lines.find(l =>
-  /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head|MD|Chairman|Owner)/i.test(l)
+  /(Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.|CEO|Manager|Director|Founder|Head|MD|Chairman|Owner|Proprietor)/i.test(l)
 );
 
 if (!contactLine) {
