@@ -127,7 +127,7 @@ async function extractText(file) {
   // 🏠 Address
   let addressMatches = [];
   lines.forEach(line => {
-    if (/(garden|Quarter|Complex|road|street|COrner point|Opposite site|Park|Chowk|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
+    if (/(garden|Quarter|Complex|road|street|Corner point|Opposite site|Park|Chowk|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
       addressMatches.push(line);
     } else if (/\b\d{6}\b/.test(line)) { // pincode
       addressMatches.push(line);
@@ -178,13 +178,24 @@ let contactLine = lines.find(l =>
 
 if (!contactLine) {
   const businessIndex = lines.indexOf(businessLine);
-  // search nearby lines that look like personal names
-  for (let i = businessIndex - 1; i <= businessIndex + 2; i++) {
+
+  // Search nearby lines around business name
+  for (let i = businessIndex - 2; i <= businessIndex + 3; i++) {
     if (i >= 0 && i < lines.length) {
       let candidate = lines[i].trim();
-      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+){1,2}$/.test(candidate)) {
-        contactLine = candidate;
-        break;
+
+      // ✅ Match 1–3 words (e.g. "Rahul", "Rahul Mehta", "Pooja R Sharma")
+      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(candidate)) {
+        // Reject lines that are too long or contain numbers/emails
+        if (
+          candidate.length <= 30 &&
+          !/@/.test(candidate) &&
+          !/\d/.test(candidate) &&
+          !/(Pvt|Ltd|Company|Tech|Solutions|Institute|Trust|Group)/i.test(candidate)
+        ) {
+          contactLine = candidate;
+          break;
+        }
       }
     }
   }
