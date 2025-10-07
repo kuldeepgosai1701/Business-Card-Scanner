@@ -57,6 +57,11 @@ document.getElementById("openCamera")?.addEventListener("click", () => {
     document.getElementById("cameraInput").click();
 });
 
+  document.getElementById("openGallery")?.addEventListener("click", () => {
+    document.getElementById("galleryInput").value = null;
+    document.getElementById("galleryInput").click();
+    });
+
 // File selected from camera
 document.getElementById("cameraInput")?.addEventListener("change", handleFileSelection);
 
@@ -210,7 +215,7 @@ if (!contactLine) {
       addressMatches.push(line);
     }
   });
-  const address = addressMatches.join(", ");
+  const address = addressMatches.join(", ");*/
 
   // ✅ Fill Form
   document.getElementById("businessName").value = businessLine || "";
@@ -218,7 +223,7 @@ if (!contactLine) {
   document.getElementById("phone").value = phone;
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
-});*/
+});
 
 
 // ================= Form Submit with Confirmation (Custom Modal) =================
