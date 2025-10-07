@@ -1,3 +1,4 @@
+
 /*document.getElementById("cardImage")?.addEventListener("change", (e) => {
   
    e.preventDefault()
@@ -26,15 +27,13 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
   loader.style.display = "none";
   window.location.href = "form.html";
 });*/
-let selectedFile = null;
-const loader = document.getElementById("loader");
+
 const scanBtn = document.getElementById("scanBtn");
 
 // --- Image Selection Handlers ---
 
 // Function to handle a file selection
 function handleFileSelection(e) {
-   e.preventDefault();
     const file = e.target.files[0];
     if (file) {
         selectedFile = file;
@@ -54,7 +53,6 @@ function handleFileSelection(e) {
 
 // Camera button click → trigger hidden input
 document.getElementById("openCamera")?.addEventListener("click", () => {
-    e.preventDefault();
     document.getElementById("cameraInput").value = null; // Clear previous selection
     document.getElementById("cameraInput").click();
 });
@@ -75,12 +73,12 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
         alert("Please capture or upload an image first!");
         return;
     }
-    
+
     loader.style.display = "block";
     scanBtn.style.display = 'none'; // Hide button during scan
 
     const text = await extractText(selectedFile);
-    
+
     localStorage.setItem("ocrText", text);
     loader.style.display = "none";
     window.location.href = "form.html";
@@ -201,6 +199,7 @@ if (!contactLine) {
 });
 
 // ================= Form Submit with Confirmation =================
+document.getElementById("cardForm")?.addEventListener("submit", function (e) {
 /*document.getElementById("cardForm")?.addEventListener("submit", function (e) {
   e.preventDefault(); // page reload na ho
 
