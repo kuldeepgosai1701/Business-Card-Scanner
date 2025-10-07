@@ -124,9 +124,20 @@ async function extractText(file) {
     !phoneMatches.some(p => line.includes(p))
   );
 
+  // 🏠 Address
+  let addressMatches = [];
+  lines.forEach(line => {
+    if (/(garden|Quarter|Complex|road|street|COrner point|Opposite site|Park|Chowk|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
+      addressMatches.push(line);
+    } else if (/\b\d{6}\b/.test(line)) { // pincode
+      addressMatches.push(line);
+    }
+  });
+  const address = addressMatches.join(", ");
+
  // 🏢 Business Name(case 4)
 let businessIndex = lines.findIndex(l =>
-  /(University|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
+  /(University|Mall|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Plastic|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Systems|Group|Education|Jewelers|Industries)/i.test(l)
 );
 
 let businessLine = "";
@@ -179,7 +190,7 @@ if (!contactLine) {
   }
 }
 
-  // 🏠 Address
+/*
   let addressMatches = [];
   lines.forEach(line => {
     if (/(garden|Quarter|Complex|road|street|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
@@ -196,45 +207,8 @@ if (!contactLine) {
   document.getElementById("phone").value = phone;
   document.getElementById("email").value = email;
   document.getElementById("address").value = address;
-});
-
-// ================= Form Submit with Confirmation =================
-/*document.getElementById("cardForm")?.addEventListener("submit", function (e) {
-  e.preventDefault(); // page reload na ho
-
-  // popup confirm box
-  let userConfirm = confirm("Do you want to download the extracted details?");
-  
-  if (userConfirm) {
-    // form se values lo
-    let businessName = document.getElementById("businessName").value;
-    let contactPerson = document.getElementById("contactPerson").value;
-    let phone = document.getElementById("phone").value;
-    let email = document.getElementById("email").value;
-    let address = document.getElementById("address").value.replace(/\n/g, " ");
-
-    // CSV headers + values
-    let headers = ["Business Name", "Contact Person", "Phone Number", "Email", "Address"];
-    let values = [businessName, contactPerson, phone, email, address];
-
-    // CSV string banao
-    let csvContent = headers.join(",") + "\n" + values.map(v => `"${v}"`).join(",");
-
-    // Blob create karo
-    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-    // Download link create karo
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "business-card.csv"; // file name
-    link.click();
-
-    // memory cleanup
-    URL.revokeObjectURL(link.href);
-  } else {
-    alert("Download cancelled!");
-  }
 });*/
+
 
 // ================= Form Submit with Confirmation (Custom Modal) =================
 
