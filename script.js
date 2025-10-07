@@ -111,7 +111,7 @@ async function extractText(file) {
   console.log("Extracted Lines:", lines);
 
    lines = lines.filter(line => !/(www\.|\.com|\.in|@)/i.test(line));
-   
+
   // Remove address-like lines to avoid picking them as business name
   let nonAddressLines = lines.filter(line => 
       !/(garden|road|street|lane|nagar|sector|circle|city|state|india|\b\d{6}\b)/i.test(line) &&
@@ -140,7 +140,7 @@ async function extractText(file) {
   // 🏠 Address
   let addressMatches = [];
    for (let i = 0; i < lines.length; i++) {
-  if (/(garden|Quarter|Complex|road|street|corner|park|lane|nagar|sector|circle|city|state|india)/i.test(lines[i]) || /\b\d{6}\b/.test(lines[i])) {
+  if (/(garden|Quarter|plot|gate|near|road|lane|nagar|circle|Complex|road|street|corner|park|lane|nagar|sector|circle|city|state|india)/i.test(lines[i]) || /\b\d{6}\b/.test(lines[i])) {
     let addr = lines[i];
 
     // Check next 1-2 lines if they look like address continuation
@@ -211,6 +211,14 @@ if (businessIndex !== -1) {
       businessLine = prevLine + " " + businessLine;
     }
   }
+
+  if (businessIndex > 0) {
+  let prevLine = nonAddressLines[businessIndex - 1];
+  if (prevLine && !/(Dr\.|Mr\.|Ms\.|CEO|Manager|Dean|Director)/i.test(prevLine) &&
+      !/@|\d/.test(prevLine) && prevLine.length > 2) {
+      businessLine = prevLine + " " + businessLine;
+  }
+}
 
   // Check next line for single-word business names
   let nextLine = nonAddressLines[businessIndex + 1];
