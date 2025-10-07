@@ -1,4 +1,5 @@
 
+
 /*document.getElementById("cardImage")?.addEventListener("change", (e) => {
   
    e.preventDefault()
@@ -73,12 +74,12 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
         alert("Please capture or upload an image first!");
         return;
     }
-
+    
     loader.style.display = "block";
     scanBtn.style.display = 'none'; // Hide button during scan
 
     const text = await extractText(selectedFile);
-
+    
     localStorage.setItem("ocrText", text);
     loader.style.display = "none";
     window.location.href = "form.html";
@@ -199,7 +200,6 @@ if (!contactLine) {
 });
 
 // ================= Form Submit with Confirmation =================
-document.getElementById("cardForm")?.addEventListener("submit", function (e) {
 /*document.getElementById("cardForm")?.addEventListener("submit", function (e) {
   e.preventDefault(); // page reload na ho
 
