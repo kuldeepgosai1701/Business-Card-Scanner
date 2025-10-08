@@ -67,11 +67,13 @@ document.getElementById("galleryInput")?.addEventListener("change", handleFileSe
 // Scan button → start OCR
 document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
     e.preventDefault();
-    if (!selectedFile) {
+    if (!selectedFiles || selectedFiles.length === 0) {
         alert("Please capture or upload an image first!");
         return;
     }
     
+    const selectedFile = selectedFiles[0]; // ✅ fix added here
+
     loader.style.display = "block";
     scanBtn.style.display = 'none'; // Hide button during scan
 
