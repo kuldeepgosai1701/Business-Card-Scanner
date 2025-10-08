@@ -31,24 +31,17 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
 const scanBtn = document.getElementById("scanBtn");
 
 // --- Image Selection Handlers ---
-
+let selectedFiles = []; // store multiple images
 // Function to handle a file selection
 function handleFileSelection(e) {
-    const file = e.target.files[0];
-    if (file) {
-        selectedFile = file;
-        console.log("File selected:", file.name);
-        // Show the scan button once a file is selected
-        if (scanBtn) {
-            // Use 'block' or 'flex' depending on your CSS, I'll use block for simplicity 
-            scanBtn.style.display = 'block'; 
-        }
-    } else {
-        selectedFile = null;
-        if (scanBtn) {
-            scanBtn.style.display = 'none';
-        }
-    }
+  selectedFiles = Array.from(e.target.files); // all selected images
+
+  if (selectedFiles.length > 0) {
+    console.log("Selected files:", selectedFiles.map(f => f.name).join(", "));
+    scanBtn.style.display = 'block';
+  } else {
+    scanBtn.style.display = 'none';
+  }
 }
 
 // Camera button click → trigger hidden input
