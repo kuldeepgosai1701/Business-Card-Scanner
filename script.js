@@ -344,7 +344,7 @@ cancelDownloadBtn.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwTXWwqvT94DRfMH0-gO01Jd6u4VVkW8eJDgxyID9tUE-Z2Oj-lbuztSd-l2XopENKA/exec';
+  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbxvHZe49W3BVN5RtEVBZkvL8raZHuhKH-ei3fLmDoaJedQpErJBxxkPsqUKWdD4cZCh/exec';
   const payload = {
     __secret: 'myApp123',
     name: ocr.Name || '',
