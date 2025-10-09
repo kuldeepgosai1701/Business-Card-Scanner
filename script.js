@@ -324,7 +324,7 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
 });
 
 // OK button click handler
-okDownloadBtn.addEventListener("click", () => {
+okDownloadBtn?.addEventListener("click", () => {
     customConfirmModal.style.display = "none"; // Modal hide karo
     startDownload(); // Download shuru karo
 
@@ -338,7 +338,7 @@ okDownloadBtn.addEventListener("click", () => {
 });
 
 // Cancel button click handler
-cancelDownloadBtn.addEventListener("click", () => {
+cancelDownloadBtn?.addEventListener("click", () => {
     customConfirmModal.style.display = "none"; // Modal hide karo
     alert("Download cancelled!");
 });
