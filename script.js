@@ -327,6 +327,14 @@ document.getElementById("cardForm")?.addEventListener("submit", function (e) {
 okDownloadBtn.addEventListener("click", () => {
     customConfirmModal.style.display = "none"; // Modal hide karo
     startDownload(); // Download shuru karo
+
+     sendToSheet({
+      name: document.getElementById("businessName").value,
+      company: document.getElementById("businessName").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      address: document.getElementById("address").value
+    });
 });
 
 // Cancel button click handler
@@ -334,3 +342,29 @@ cancelDownloadBtn.addEventListener("click", () => {
     customConfirmModal.style.display = "none"; // Modal hide karo
     alert("Download cancelled!");
 });
+
+async function sendToSheet(ocr) {
+  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwrEy2OWUv9YOvRItl_L73s_CxlbuVlU0iWfTiP5q7t9UB--e0OP7Hdn829D2alM2VU/exec';
+  const payload = {
+    __secret: 'myApp123',
+    name: ocr.name || '',
+    company: ocr.company || '',
+    email: ocr.email || '',
+    phone: ocr.phone || '',
+    jobTitle: ocr.jobTitle || '',
+    address: ocr.address || '',
+    notes: ocr.notes || ''
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    console.log('Response from Google Sheet:', json);
+  } catch (err) {
+    console.error('Error sending to Google Sheet:', err);
+  }
+}
