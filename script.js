@@ -329,8 +329,8 @@ okDownloadBtn.addEventListener("click", () => {
     startDownload(); // Download shuru karo
 
      sendToSheet({
-      name: document.getElementById("businessName").value,
-      company: document.getElementById("businessName").value,
+      businessName: document.getElementById("businessName").value,
+      contactPerson: document.getElementById("contactPerson").value,
       phone: document.getElementById("phone").value,
       email: document.getElementById("email").value,
       address: document.getElementById("address").value
@@ -344,16 +344,15 @@ cancelDownloadBtn.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwrEy2OWUv9YOvRItl_L73s_CxlbuVlU0iWfTiP5q7t9UB--e0OP7Hdn829D2alM2VU/exec';
+  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwTXWwqvT94DRfMH0-gO01Jd6u4VVkW8eJDgxyID9tUE-Z2Oj-lbuztSd-l2XopENKA/exec';
   const payload = {
     __secret: 'myApp123',
-    name: ocr.name || '',
-    company: ocr.company || '',
-    email: ocr.email || '',
-    phone: ocr.phone || '',
-    jobTitle: ocr.jobTitle || '',
-    address: ocr.address || '',
-    notes: ocr.notes || ''
+    name: ocr.Name || '',
+    contactPerson: ocr.ContactPerson || '',
+    email: ocr.Phone || '',
+    phone: ocr.Email || '',
+    address: ocr.Address || '',
+    
   };
 
   try {
