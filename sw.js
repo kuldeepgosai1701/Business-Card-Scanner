@@ -1,4 +1,4 @@
-const CACHE_NAME = 'card-scanner-cache-v132';
+const CACHE_NAME = 'card-scanner-cache-v133';
 const urlsToCache = [
   './',
   './index.html',
