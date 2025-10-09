@@ -345,29 +345,33 @@ cancelDownloadBtn?.addEventListener("click", () => {
 
 async function sendToSheet(ocr) {
   const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwmmkOtprjZ4YK6iB7R2nusF1k8SxjUKpw8G8JmYJ2YM6g9w5itsCDltELgZi4oLHNJ/exec';
-  const payload = {
-    __secret: 'myApp123',
-    Name: ocr.businessName || '',
-    ContactPerson: ocr.contactPerson || '',
-    Phone: ocr.phone || '',
-    Email: ocr.email || '',
-    Address: ocr.address || '',
-    
-    
-  };
+  
+  // Convert the payload to URLSearchParams (standard form encoding)
+  const params = new URLSearchParams();
+  params.append('__secret', 'myApp123');
+  params.append('Name', ocr.businessName || '');
+  params.append('ContactPerson', ocr.contactPerson || '');
+  params.append('Phone', ocr.phone || '');
+  params.append('Email', ocr.email || '');
+  params.append('Address', ocr.address || '');
 
   try {
     const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      // No need to set headers for form data, but you can explicitly set it:
+      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
+      body: params // Use the URLSearchParams object
     });
 
     if (!res.ok) {
       console.error('HTTP error sending to Google Sheet:', res.status, res.statusText);
-      
-    const json = await res.json();
-    console.log('Response from Google Sheet:', json);
+      // Optional: Check the text of the non-OK response
+      console.error('Response text:', await res.text());
+    } else {
+      console.log('Data successfully sent to Google Sheet.');
+      // const json = await res.json(); // Uncomment if your script returns JSON
+      // console.log('Response from Google Sheet:', json);
+    }
   } catch (err) {
     console.error('Error sending to Google Sheet:', err);
   }
