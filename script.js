@@ -362,6 +362,10 @@ async function sendToSheet(ocr) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+
+    if (!res.ok) {
+      console.error('HTTP error sending to Google Sheet:', res.status, res.statusText);
+      
     const json = await res.json();
     console.log('Response from Google Sheet:', json);
   } catch (err) {
