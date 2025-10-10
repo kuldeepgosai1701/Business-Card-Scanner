@@ -344,34 +344,56 @@ cancelDownloadBtn?.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbyl56aH9TaocNhlquyWlv1k2pBVvpNKkKW1ZMqC7Ox4X95DKNxbcVCBck-QLLonlZgh/exec';
+  // const url = 'https://script.google.com/macros/s/AKfycbyIHunlMSlrEUXWDSbYao1OssiO29SzK-KwiIb11fWuHYbbgARE0kMGkGN8qsMLqFGg/exec';
   
-  // Convert the payload to URLSearchParams (standard form encoding)
-  const params = new URLSearchParams();
-  params.append('__secret', 'myApp123');
-  params.append('Name', ocr.businessName || '');
-  params.append('ContactPerson', ocr.contactPerson || '');
-  params.append('Phone', ocr.phone || '');
-  params.append('Email', ocr.email || '');
-  params.append('Address', ocr.address || '');
+  // // Convert the payload to URLSearchParams (standard form encoding)
+  // const params = new URLSearchParams();
+  // params.append('__secret', 'myApp123');
+  // params.append('Name', ocr.businessName || '');
+  // params.append('ContactPerson', ocr.contactPerson || '');
+  // params.append('Phone', ocr.phone || '');
+  // params.append('Email', ocr.email || '');
+  // params.append('Address', ocr.address || '');
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      // No need to set headers for form data, but you can explicitly set it:
-      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
-      body: params // Use the URLSearchParams object
-    });
+  // try {
+  //   const res = await fetch(url, {
+  //     method: 'POST',
+  //     // No need to set headers for form data, but you can explicitly set it:s
+  //     // headers: {'Content-Type': '	application/json' },
+  //     body: params // Use the URLSearchParams object
+  //   });
 
-    if (!res.ok) {
-      console.error('HTTP error sending to Google Sheet:', res.status, res.statusText);
-      // Optional: Check the text of the non-OK response
-      console.error('Response text:', await res.text());
-    } else {
-      console.log('Data successfully sent to Google Sheet.');
-      // const json = await res.json(); // Uncomment if your script returns JSON
-      // console.log('Response from Google Sheet:', json);
-    }
+  const formdata = new FormData();
+  formdata.append("__secret", "myApp123");
+  formdata.append("Name", ocr.businessName);
+  formdata.append('ContactPerson', ocr.contactPerson || '');
+  formdata.append('Phone', ocr.phone || '');
+  formdata.append('Email', ocr.email || '');
+  formdata.append('Address', ocr.address || '');
+
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow"
+  };
+
+  try{
+
+  fetch("https://script.google.com/macros/s/AKfycbxzhxJaYo2VGwM8RFeCc8hXAkVi3b1wvd2x4n9A0GkxfOaahGmNOZffKGNlp6gb6r5Q/exec", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
+
+    // if (!res.ok) {
+    //   console.error('HTTP error sending to Google Sheet:', res.status, res.statusText);
+    //   // Optional: Check the text of the non-OK response
+    //   console.error('Response text:', await res.text());
+    // } else {
+    //   console.log('Data successfully sent to Google Sheet.');
+    //   // const json = await res.json(); // Uncomment if your script returns JSON
+    //   // console.log('Response from Google Sheet:', json);
+    // }
   } catch (err) {
     console.error('Error sending to Google Sheet:', err);
   }
