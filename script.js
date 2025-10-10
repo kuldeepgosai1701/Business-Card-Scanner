@@ -344,7 +344,7 @@ cancelDownloadBtn?.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbwmmkOtprjZ4YK6iB7R2nusF1k8SxjUKpw8G8JmYJ2YM6g9w5itsCDltELgZi4oLHNJ/exec';
+  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbzUBAI7WlYLcNNhI-yiG2VQ8gsFvwxwqX9Oh2JbnlhN5PBklOCpmJXkzwtLLgEWkD12/exec';
   
   // Convert the payload to URLSearchParams (standard form encoding)
   const params = new URLSearchParams();
