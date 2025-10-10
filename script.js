@@ -344,16 +344,17 @@ cancelDownloadBtn?.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbzUBAI7WlYLcNNhI-yiG2VQ8gsFvwxwqX9Oh2JbnlhN5PBklOCpmJXkzwtLLgEWkD12/exec';
-  
+  const url = 'https://script.google.com/a/macros/raoinformationtechnology.com/s/AKfycbw-8MF8kyhookwwlh0ltIrXqhXOIKKf2Ozri858chJ5T39pxXUoGjh50d6EcZldG21i/exec';
+   const payload = {
+    __secret: 'myApp123',
   // Convert the payload to URLSearchParams (standard form encoding)
   const params = new URLSearchParams();
-  params.append('__secret', 'myApp123');
-  params.append('Name', ocr.businessName || '');
-  params.append('ContactPerson', ocr.contactPerson || '');
-  params.append('Phone', ocr.phone || '');
-  params.append('Email', ocr.email || '');
-  params.append('Address', ocr.address || '');
+   params.append('Name', ocr.businessName || '');
+   params.append('ContactPerson', ocr.contactPerson || '');
+   params.append('Phone', ocr.phone || '');
+   params.append('Email', ocr.email || '');
+   params.append('Address', ocr.address || '');
+   };
 
   try {
     const res = await fetch(url, {
