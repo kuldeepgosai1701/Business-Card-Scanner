@@ -76,20 +76,20 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
 
 
 async function extractText(file) {
-  // Create a new OCR worker
-  const worker = await Tesseract.createWorker('eng', 1, {
-    logger: info => console.log(info) // Optional: progress logs
+  const { createWorker } = Tesseract;
+  const worker = await createWorker({
+    logger: info => console.log(info)
   });
 
-  // Recognize the image
-  const result = await worker.recognize(file);
+  await worker.loadLanguage('eng');
+  await worker.initialize('eng');
 
-  // Terminate the worker after completion (important for performance)
+  const result = await worker.recognize(file);
   await worker.terminate();
 
-  // Return the extracted text
   return result.data.text;
 }
+
 
 
  window.addEventListener("load", () => {
