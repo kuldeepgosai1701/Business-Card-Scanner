@@ -85,17 +85,24 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
     window.location.href = "form.html";
 });
 
+
+
 async function extractText(file) {
-  return new Promise((resolve, reject) => {
-    Tesseract.recognize(
-      file,
-      'eng',
-      { logger: m => console.log(m) }
-    ).then(({ data: { text } }) => {
-      resolve(text);
-    }).catch(err => reject(err));
+  // Create a new OCR worker
+  const worker = await Tesseract.createWorker('eng', 1, {
+    logger: info => console.log(info) // Optional: progress logs
   });
+
+  // Recognize the image
+  const result = await worker.recognize(file);
+
+  // Terminate the worker after completion (important for performance)
+  await worker.terminate();
+
+  // Return the extracted text
+  return result.data.text;
 }
+
 
  window.addEventListener("load", () => {
   if (!document.getElementById("businessName")) return;
@@ -148,8 +155,8 @@ if (businessIndex !== -1) {
     // If previous line is short, doesn't contain numbers, and is likely part of the name
     if (prevLine && prevLine.length > 2 && prevLine.split(' ').length < 3 && !/\d/.test(prevLine)) {
       businessLine = prevLine + " " + businessLine;
-    }
-  }
+    }
+  }
 } else {
   // Fallback: Longest clean line
    businessLine = nonPersonLines.reduce((longest, line) =>
@@ -181,9 +188,9 @@ document.getElementById("businessName").value = businessLine || "";
   // 🏠 Address
   // 🏠 Address
 let addressMatches = [];
-   for (let i = 0; i < lines.length; i++) {
-  if (/(garden|Quarter|plot|gate|near|road|lane|nagar|circle|Complex|road|street|corner|park|lane|nagar|sector|circle|city|state|india)/i.test(lines[i]) || /\b\d{6}\b/.test(lines[i])) {
-    let addr = lines[i];
+    for (let i = 0; i < lines.length; i++) {
+    if (/(garden|Quarter|plot|gate|near|road|lane|nagar|circle|Complex|road|street|corner|park|lane|nagar|sector|circle|city|state|india)/i.test(lines[i]) || /\b\d{6}\b/.test(lines[i])) {
+    let addr = lines[i];
     
     // --- NEW ADDITION FOR ADDRESS CLEANUP ---
     // Remove Business Name or Person Name from address lines if present
