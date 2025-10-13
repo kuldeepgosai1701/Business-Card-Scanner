@@ -1,32 +1,4 @@
 
-/*document.getElementById("cardImage")?.addEventListener("change", (e) => {
-  
-   e.preventDefault()
-   const file = e.target.files[0];
-     if (!file) {
-     console.log("File selection cancelled.");
-     return;
-    }
-    console.log("Image selected:", file);
-});
-   
-  // Use the existing logic triggered by the scan button
-document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
-  e.preventDefault()
-  const file = document.getElementById("cardImage").files[0];
-  if (!file) {
-    alert("Please upload or capture an image!");
-    return;
-  }
-
-  const loader = document.getElementById("loader");
-  loader.style.display = "block";
-
-  const text = await extractText(file);
-  localStorage.setItem("ocrText", text);
-  loader.style.display = "none";
-  window.location.href = "form.html";
-});*/
 
 const scanBtn = document.getElementById("scanBtn");
 const loader = document.getElementById("loader"); 
@@ -85,16 +57,65 @@ document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
     window.location.href = "form.html";
 });
 
+
+// 💡 NEW extractText function using an External OCR API
 async function extractText(file) {
-  return new Promise((resolve, reject) => {
-    Tesseract.recognize(
-      file,
-      'eng',
-      { logger: m => console.log(m) }
-    ).then(({ data: { text } }) => {
-      resolve(text);
-    }).catch(err => reject(err));
-  });
+    // ⚠️ IMPORTANT: Replace with your actual OCR Space API Key and URL
+    const OCR_API_URL = "YOUR_OCR_API_ENDPOINT_HERE"; // e.g., 'https://api.ocr.space/parse/image'
+    const API_KEY = "YOUR_API_KEY_HERE"; 
+
+    // 1. Prepare the request data using FormData
+    const formData = new FormData();
+    formData.append("file", file); // The actual image file object
+    
+    // Add other required parameters for your chosen API
+    formData.append("apikey", API_KEY);
+    formData.append("language", "eng"); // Set language
+    
+    // You might need other settings specific to your API, e.g.,
+    // formData.append("isOverlayRequired", "true"); 
+
+    try {
+        const response = await fetch(OCR_API_URL, {
+            method: "POST",
+            body: formData // Send the image and parameters
+        });
+
+        if (!response.ok) {
+            // Handle HTTP errors
+            throw new Error(`API Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("OCR API Response:", data);
+
+        // 2. Parse the result to get the extracted text
+        // NOTE: The structure depends entirely on your API's response format.
+        // This is a common pattern for text extraction APIs.
+
+        let extractedText = "";
+
+        if (data.IsSuccessful && data.ParsedResults && data.ParsedResults.length > 0) {
+            // Check if the API returned structured results
+            extractedText = data.ParsedResults.map(result => result.ParsedText).join('\n');
+        } else if (data.text) {
+             // Fallback for APIs that return plain text directly
+             extractedText = data.text;
+        } else {
+            console.error("OCR API did not return parsed text:", data);
+            throw new Error("OCR failed to extract text. Check the API response.");
+        }
+        
+        return extractedText;
+
+    } catch (error) {
+        console.error("Error during OCR API call:", error);
+        alert("OCR failed. Please check the console for details and ensure your API Key and URL are correct.");
+        // Re-display the scan button and hide the loader on failure
+        loader.style.display = "none";
+        scanBtn.style.display = 'block';
+        return ""; // Return empty text on failure
+    }
 }
 
  window.addEventListener("load", () => {
