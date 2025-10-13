@@ -1,49 +1,41 @@
 
-/*document.getElementById("cardImage")?.addEventListener("change", (e) => {
-  
-   e.preventDefault()
-   const file = e.target.files[0];
-     if (!file) {
-     console.log("File selection cancelled.");
-     return;
-    }
-    console.log("Image selected:", file);
-});
-   
-  // Use the existing logic triggered by the scan button
-document.getElementById("scanBtn")?.addEventListener("click", async (e) => {
-  e.preventDefault()
-  const file = document.getElementById("cardImage").files[0];
-  if (!file) {
-    alert("Please upload or capture an image!");
-    return;
-  }
-
-  const loader = document.getElementById("loader");
-  loader.style.display = "block";
-
-  const text = await extractText(file);
-  localStorage.setItem("ocrText", text);
-  loader.style.display = "none";
-  window.location.href = "form.html";
-});*/
-
 const scanBtn = document.getElementById("scanBtn");
 const loader = document.getElementById("loader"); 
 
+// 💡 NEW: Select the preview elements
+const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+const imagePreview = document.getElementById("imagePreview");
+
 // --- Image Selection Handlers ---
 let selectedFiles = []; // store multiple images
+
 // Function to handle a file selection
 function handleFileSelection(e) {
-  selectedFiles = Array.from(e.target.files); // all selected images
+  selectedFiles = Array.from(e.target.files); // all selected images
 
-  if (selectedFiles.length > 0) {
-    console.log("Selected files:", selectedFiles.map(f => f.name).join(", "));
-    scanBtn.style.display = 'block';
-  } else {
-    scanBtn.style.display = 'none';
-  }
+  if (selectedFiles.length > 0) {
+    const selectedFile = selectedFiles[0]; // We only care about the first file
+    console.log("Selected file:", selectedFile.name);
+    scanBtn.style.display = 'block';
+
+    // 💡 NEW: Display the image preview
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        imagePreview.src = event.target.result;
+        imagePreviewContainer.style.display = 'block';
+    };
+    reader.readAsDataURL(selectedFile);
+    // 💡 END NEW
+
+  } else {
+    scanBtn.style.display = 'none';
+    // 💡 NEW: Hide preview if no file is selected
+    imagePreviewContainer.style.display = 'none';
+    imagePreview.src = '';
+    // 💡 END NEW
+  }
 }
+
 
 // Camera button click → trigger hidden input
 document.getElementById("openCamera")?.addEventListener("click", () => {
@@ -51,10 +43,6 @@ document.getElementById("openCamera")?.addEventListener("click", () => {
     document.getElementById("cameraInput").click();
 });
 
-  document.getElementById("openGallery")?.addEventListener("click", () => {
-    document.getElementById("galleryInput").value = null;
-    document.getElementById("galleryInput").click();
-    });
 
 // File selected from camera
 document.getElementById("cameraInput")?.addEventListener("change", handleFileSelection);
@@ -120,6 +108,7 @@ async function extractText(file) {
       !/(garden|road|street|lane|nagar|sector|circle|city|state|india|\b\d{6}\b)/i.test(line) &&
       !/(www\.|\.com|\.in|@)/i.test(line)  // also remove website/email lines
   );
+
 // --- NEW ADDITION FOR SUNSHINE CARD ---
 // Additional filter to remove lines that are clearly address components but lack city/state/pincode keywords
 nonAddressLines = nonAddressLines.filter(line =>
@@ -127,11 +116,7 @@ nonAddressLines = nonAddressLines.filter(line =>
 );
 // ------------------------------------
 
-
-// 🏢 Business Name using nonAddressLines (Existing logic, but now with cleaner input)
-// ... (Your existing Business Name logic should be placed here, preferably the prioritized one from the previous answer)
-// **NOTE:** Ensure you are using the **Prioritized Business Name Logic** from the previous answer, which prioritizes "Industries" over "Plastic," etc.
-// Since 'Education' is a strong keyword, 'Sunshine Education' should be selected.
+.
 
 let nonPersonLines = nonAddressLines.filter(l =>
   // Exclude lines with common titles
@@ -221,42 +206,6 @@ let addressMatches = [];
 const address = addressMatches.join(", ");
 
 
- // 🏢 Business Name(case 4)
-/*let businessIndex = lines.findIndex(l =>
-  /(University|Mall|School|Project|Consultancy|Tech|Resort|Restaurant|Academy|Infotech|CENTRE|Plastic|Adverstising|College|Company|Pvt|Ltd|LLP|Inc|Trust|Hospital|Institute|Technologies|Solutions|Enterprises|Corporation|Associates|Explores|Systems|Group|Education|Jewelers|Industries)/i.test(l)
-);
-
-let businessLine = "";
-if (businessIndex !== -1) {
-  businessLine = lines[businessIndex];
-
-  // 👆 Check previous line also (could be part of business name)
-  if (businessIndex > 0) {
-    let prevLine = lines[businessIndex - 1];
-    if (
-      prevLine.length > 2 &&
-      !/^\d+$/.test(prevLine) &&         // not just numbers
-      !/@/.test(prevLine) &&            // not email
-      !/\d{10}/.test(prevLine) &&       // not phone
-      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(prevLine) // not a personal name
-    ) {
-      businessLine = prevLine + " " + businessLine; // merge
-    }
-  }
-} else {
-  // fallback → pick longest non-name line
-  businessLine = lines.reduce((longest, line) => {
-    if (
-      line.length > (longest?.length || 0) &&
-      !/^[A-Z][a-z]+(\s[A-Z][a-z]+){0,2}$/.test(line) &&
-      !/\d{10}/.test(line) &&
-      !/@/.test(line)
-    ) {
-      return line;
-    }
-    return longest;
-  }, "");
-}*/
 // 🏢 Business Name using nonAddressLines
 let nonPersonLines = nonAddressLines.filter(l =>
   // Exclude lines with common titles, as these are usually the Contact Person
@@ -286,25 +235,7 @@ if (businessIndex !== -1) {
   , "");
 }
 
-  /*if (businessIndex > 0) {
-  let prevLine = nonAddressLines[businessIndex - 1];
-  if (prevLine && !/(Dr\.|Mr\.|Ms\.|CEO|Manager|Dean|Director)/i.test(prevLine) &&
-      !/@|\d/.test(prevLine) && prevLine.length > 2) {
-      businessLine = prevLine + " " + businessLine;
-  }
-}
-
-  // Check next line for single-word business names
-  let nextLine = nonAddressLines[businessIndex + 1];
-  if (nextLine && nextLine.length > 2 && /University|Ltd|Inc|Pvt|Trust|College/i.test(nextLine)) {
-    businessLine += " " + nextLine;
-  }
-} else {
-  // fallback → pick longest line in nonAddressLines
-  businessLine = nonAddressLines.reduce((longest, line) =>
-    line.length > (longest?.length || 0) ? line : longest
-  , "");
-}*/
+ 
 
 // 👤 Contact (case 3)
 let contactLine = lines.find(l =>
@@ -357,16 +288,6 @@ if (!contactLine || contactLine.length < 5) {
 }
 
 document.getElementById("contactPerson").value = contactLine || "";
-/*
-  let addressMatches = [];
-  lines.forEach(line => {
-    if (/(garden|Quarter|Complex|road|street|highway|lane|nagar|sector|circle|block|gate|tower|city|state|india)/i.test(line)) {
-      addressMatches.push(line);
-    } else if (/\b\d{6}\b/.test(line)) { // pincode
-      addressMatches.push(line);
-    }
-  });
-  const address = addressMatches.join(", ");*/
 
   // ✅ Fill Form
   document.getElementById("businessName").value = businessLine || "";
@@ -442,25 +363,7 @@ cancelDownloadBtn?.addEventListener("click", () => {
 });
 
 async function sendToSheet(ocr) {
-  // const url = 'https://script.google.com/macros/s/AKfycbyIHunlMSlrEUXWDSbYao1OssiO29SzK-KwiIb11fWuHYbbgARE0kMGkGN8qsMLqFGg/exec';
-  
-  // // Convert the payload to URLSearchParams (standard form encoding)
-  // const params = new URLSearchParams();
-  // params.append('__secret', 'myApp123');
-  // params.append('Name', ocr.businessName || '');
-  // params.append('ContactPerson', ocr.contactPerson || '');
-  // params.append('Phone', ocr.phone || '');
-  // params.append('Email', ocr.email || '');
-  // params.append('Address', ocr.address || '');
-
-  // try {
-  //   const res = await fetch(url, {
-  //     method: 'POST',
-  //     // No need to set headers for form data, but you can explicitly set it:s
-  //     // headers: {'Content-Type': '	application/json' },
-  //     body: params // Use the URLSearchParams object
-  //   });
-
+ 
   const formdata = new FormData();
   formdata.append("__secret", "myApp123");
   formdata.append("Name", ocr.businessName);
@@ -482,16 +385,6 @@ async function sendToSheet(ocr) {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
-
-    // if (!res.ok) {
-    //   console.error('HTTP error sending to Google Sheet:', res.status, res.statusText);
-    //   // Optional: Check the text of the non-OK response
-    //   console.error('Response text:', await res.text());
-    // } else {
-    //   console.log('Data successfully sent to Google Sheet.');
-    //   // const json = await res.json(); // Uncomment if your script returns JSON
-    //   // console.log('Response from Google Sheet:', json);
-    // }
   } catch (err) {
     console.error('Error sending to Google Sheet:', err);
   }
