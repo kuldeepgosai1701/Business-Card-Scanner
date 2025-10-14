@@ -23,10 +23,7 @@ document.getElementById("openCamera")?.addEventListener("click", () => {
     document.getElementById("cameraInput").click();
 });
 
-  document.getElementById("openGallery")?.addEventListener("click", () => {
-    document.getElementById("galleryInput").value = null;
-    document.getElementById("galleryInput").click();
-    });
+  
 
 // File selected from camera
 document.getElementById("cameraInput")?.addEventListener("change", handleFileSelection);
