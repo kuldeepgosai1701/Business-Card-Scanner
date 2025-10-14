@@ -1,4 +1,4 @@
-// form-logic.js
+
 
 // Change 'load' to 'DOMContentLoaded'
 window.addEventListener("DOMContentLoaded", () => {
@@ -254,7 +254,7 @@ async function sendToSheet(ocr) {
 
   try{
 
-  fetch("https://script.google.com/macros/s/AKfycbxzhxJaYo2VGwM8RFeCc8hXAkVi3b1wvd2x4n9A0GkxfOaahGmNOZffKGNlp6gb6r5Q/exec", requestOptions)
+  fetch("https://script.google.com/macros/s/AKfycbzmIQMr5bTXzCcA4VB2RWGOb35C0fq-wnV_ke0rjTa8FOuMpJqkvwTwFLu6J89kJ2k/exec", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
