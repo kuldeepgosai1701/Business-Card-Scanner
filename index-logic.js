@@ -1,5 +1,3 @@
-
-
 const scanBtn = document.getElementById("scanBtn");
 const loader = document.getElementById("loader"); 
 const imagePreviewContainer = document.getElementById("imagePreviewContainer");

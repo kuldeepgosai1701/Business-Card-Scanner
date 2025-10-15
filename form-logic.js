@@ -254,7 +254,7 @@ async function sendToSheet(ocr) {
 
   try{
 
-  fetch("https://script.google.com/macros/s/AKfycbzmIQMr5bTXzCcA4VB2RWGOb35C0fq-wnV_ke0rjTa8FOuMpJqkvwTwFLu6J89kJ2k/exec", requestOptions)
+  fetch("https://script.google.com/macros/s/AKfycbxYEPVJJXcq503---Inck4SPLFIeTrjCfywmmgxtt01tL_HoBFiDAcm73h8AU-RVzWF/exec", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
