@@ -1,5 +1,3 @@
-
-
 // Change 'load' to 'DOMContentLoaded'
 window.addEventListener("DOMContentLoaded", () => {
     // Check if form elements exist before trying to fill them
