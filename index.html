@@ -14,8 +14,8 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4caf50">
  
-<!-- Tesseract.js OCR Library -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+
   
   <style>
 
@@ -31,7 +31,7 @@
       padding: 15px 40px;
       font-size: 18px;
       font-weight: bold;
-      background: #001aff;
+      background: #0026ff;
       color: white;
       border: none;
       border-radius: 8px;
@@ -179,6 +179,8 @@
        <input type="file" id="galleryInput" class="file-input" accept="image/*" multiple>
     </label>
   
+     
+
      <button id="scanBtn" class="scan-btn" style="display: none; margin-top: 10px; padding: 15px 40px; font-size: 18px;">
     <span class="material-icons">Scan</span> Selected Card
   </button>
@@ -187,18 +189,6 @@
     </div>
      </div>
 
-  <script src="script.js">
-  </script>
-<script>
-
-// Service worker register
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service Worker registered:', reg.scope))
-      .catch(err => console.log('Service Worker failed:', err));
-  });
-}
-</script>
+  <script src="index-logic.js"></script>
 </body>
 </html>
